@@ -12,8 +12,8 @@ export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col items-center justify-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center mt-4">Previsão para Sexta-feira</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center mt-4">Previsão do CEEF para sexta</h2>
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
           <WeatherCard weatherData={openweatherData} />
           <WeatherCard weatherData={openweatherData} />
           <WeatherCard weatherData={openweatherData} />

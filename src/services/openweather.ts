@@ -74,14 +74,14 @@ export async function getOpenweatherFridayForecast() {
       dataHora: new Date(item.dt * 1000).toLocaleString("pt-BR", {
         timeZone: "America/Bahia",
       }),
-      temperatura: item.main.temp,
+      temperatura: item.main.temp.toFixed(0),
       descricao: item.weather[0].description,
       probabilidadeChuva: item.pop
         ? parseFloat((item.pop * 100).toFixed(2))
         : null, // Formatado com 2 casas decimais
       velocidadeVento: item.wind.speed
-        ? parseFloat((item.wind.speed * 3.6).toFixed(1))
-        : null, // Velocidade do vento com 2 casas decimais
+        ? parseFloat((item.wind.speed * 3.6).toFixed(0))
+        : null, 
     })
   );
 

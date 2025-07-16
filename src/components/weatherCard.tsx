@@ -24,18 +24,12 @@ export default function WeatherCard({ weatherData }: { weatherData: standardWeat
     };
 
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit min-w-full min-h-full mx-auto">
-            {/* Título do card */}
-            <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Previsão para Sexta-feira</h2>
-                <p className="text-sm text-gray-600">Fonte: {weatherData[0]?.fonte}</p>
-            </div>
-
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto">
             {/* Grid de horários */}
-            <div className="flex gap-2">
+            <div className="md:flex gap-2 grid grid-cols-3">
                 {weatherData.map((data, index) => (
-                    <div 
-                        key={index} 
+                    <div
+                        key={index}
                         className="bg-white/70 rounded-lg p-4 text-center hover:bg-white/90 transition-all duration-200 border border-white/50"
                     >
                         {/* Horário */}
@@ -67,7 +61,7 @@ export default function WeatherCard({ weatherData }: { weatherData: standardWeat
                                     <span className="text-blue-600">💧 {data.probabilidadeChuva}%</span>
                                 </div>
                             )}
-                            
+
                             {data.velocidadeVento !== null && (
                                 <div className="text-xs">
                                     <span className="text-green-600">💨 {data.velocidadeVento} km/h</span>
@@ -76,6 +70,11 @@ export default function WeatherCard({ weatherData }: { weatherData: standardWeat
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* fonte dos dados */}
+            <div className="text-right mt-4">
+                <p className="text-sm text-gray-600">Fonte: {weatherData[0]?.fonte}</p>
             </div>
         </div>
     )
