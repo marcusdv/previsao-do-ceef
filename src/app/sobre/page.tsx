@@ -4,10 +4,7 @@ export default function Sobre() {
   return (
     <div className="font-sans min-h-screen p-8 pb-20 sm:p-20">
       <main className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Sobre o Sexta Tempo
-        </h1>
-        
+        text-sm text-gray-600
         <div className="space-y-8 text-lg leading-relaxed">
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-blue-600">
