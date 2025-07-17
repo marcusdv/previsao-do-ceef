@@ -6,7 +6,7 @@ import { OpenWeatherDataType } from "@/types/openWeatherType"
  * @param weatherData - Array de objetos do tipo `OpenWeatherDataType` contendo os dados meteorológicos.
  * @returns Um elemento JSX que renderiza os dados meteorológicos em cards bonitos.
  */
-export default function WeatherCard({ weatherData, className }: { weatherData: OpenWeatherDataType[], className?: string }) {
+export default function OpenWeatherCard({ weatherData, className }: { weatherData: OpenWeatherDataType[], className?: string }) {
     const getWeatherIcon = (description: string) => {
         const desc = description.toLowerCase();
         if (desc.includes('chuva') || desc.includes('chuvisco')) return '🌧️';
@@ -25,6 +25,7 @@ export default function WeatherCard({ weatherData, className }: { weatherData: O
 
     return (
         <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ${className}`}>
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Previsão do Tempo - CEEF</h2>
             {/* Grid de horários */}
             <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
                 {weatherData.map((data, index) => (

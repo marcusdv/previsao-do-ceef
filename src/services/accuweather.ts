@@ -5,6 +5,11 @@ function fahrenheitToCelsius(fahrenheit: number): number {
   return Math.round((fahrenheit - 32) * 5 / 9);
 }
 
+// Função para converter mph para km/h
+function mphToKmh(mph: number): number {
+  return Math.round(mph * 1.60934);
+}
+
 // Função para determinar o tempo de cache baseado no dia da semana
 function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   const now = new Date();
@@ -75,7 +80,7 @@ export async function getAccuweatherFridayForecast() {
       precipitationProbability: friday.Day.PrecipitationProbability,
       thunderstormProbability: friday.Day.ThunderstormProbability,
       wind: {
-        speed: friday.Day.Wind.Speed.Value,
+        speed: mphToKmh(friday.Day.Wind.Speed.Value),
         direction: friday.Day.Wind.Direction.English,
       },
     },
@@ -85,7 +90,7 @@ export async function getAccuweatherFridayForecast() {
       precipitationProbability: friday.Night.PrecipitationProbability,
       thunderstormProbability: friday.Night.ThunderstormProbability,
       wind: {
-        speed: friday.Night.Wind.Speed.Value,
+        speed: mphToKmh(friday.Night.Wind.Speed.Value),
         direction: friday.Night.Wind.Direction.English,
       },
     },

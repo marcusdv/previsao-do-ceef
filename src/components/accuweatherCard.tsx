@@ -5,19 +5,19 @@ interface Props {
     className?: string; // Permite passar uma classe CSS opcional
 }
 
-export function AccuweatherCard({ data, className }: Props) {
-    const { date, temperature, realFeelTemperature, day, night, sun, moon } = data;
+export default function AccuweatherCard({ data, className }: Props) {
+    const {  temperature, realFeelTemperature, day, night, sun, moon } = data;
 
 
     // Formatar a data
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString("pt-BR", {
-            weekday: "long",
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        });
-    };
+    // const formatDate = (dateString: string) => {
+    //     return new Date(dateString).toLocaleDateString("pt-BR", {
+    //         weekday: "long",
+    //         day: "2-digit",
+    //         month: "2-digit",
+    //         year: "numeric",
+    //     });
+    // };
 
     // Formatar horários
     const formatTime = (timeString: string) => {
@@ -43,6 +43,20 @@ export function AccuweatherCard({ data, className }: Props) {
         return phases[phase] || phase;
     };
 
+    const translateCardinalDirection = (direction: string) => {
+        const directionOBJ: {[key: string]: string} = {
+            'N': 'Norte',
+            'NE': 'Nordeste',
+            'E': 'Leste',
+            'SE': 'Sudeste',
+            'S': 'Sul',
+            'SW': 'Sudoeste',
+            'W': 'Oeste',
+            'NW': 'Noroeste'
+        }
+        return directionOBJ[direction] || direction;
+    }
+
     return (
         <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>
             {/* Header do Card */}
@@ -51,11 +65,6 @@ export function AccuweatherCard({ data, className }: Props) {
                 <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-medium">
                     API Premium
                 </div>
-            </div>
-
-            {/* Data */}
-            <div className="mb-4 text-center">
-                <p className="text-gray-600 font-medium">{formatDate(date)}</p>
             </div>
 
             {/* Temperaturas */}
@@ -97,7 +106,7 @@ export function AccuweatherCard({ data, className }: Props) {
                     </div>
                     <p className="text-sm text-gray-700 mb-2">{day.longPhrase}</p>
                     <div className="flex justify-between text-xs text-gray-600">
-                        <span>💨 {day.wind.speed} mph {day.wind.direction}</span>
+                        <span>💨 {day.wind.speed} Km/h {translateCardinalDirection(day.wind.direction)}</span>
                         <span>⛈️ {day.thunderstormProbability}% trovoada</span>
                     </div>
                 </div>
@@ -114,7 +123,7 @@ export function AccuweatherCard({ data, className }: Props) {
                     </div>
                     <p className="text-sm text-gray-700 mb-2">{night.longPhrase}</p>
                     <div className="flex justify-between text-xs text-gray-600">
-                        <span>💨 {night.wind.speed} mph {night.wind.direction}</span>
+                        <span>💨 {night.wind.speed} Km/h {translateCardinalDirection(night.wind.direction)}</span>
                         <span>⛈️ {night.thunderstormProbability}% trovoada</span>
                     </div>
                 </div>
