@@ -1,12 +1,7 @@
 @import "tailwindcss";
-
-:root {
-}
-
-@theme inline {
-}
-
-
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+@theme {
+  --breakpoint-xxl: 86.625rem; /* 1386px */
 }

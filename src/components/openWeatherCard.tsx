@@ -1,12 +1,12 @@
-import { standardWeatherType } from "@/types/standardWeatherType"
+import { OpenWeatherDataType } from "@/types/openWeatherType"
 
 /**
  * Componente que exibe um cartão de informações meteorológicas.
  *
- * @param weatherData - Array de objetos do tipo `standardWeatherType` contendo os dados meteorológicos.
+ * @param weatherData - Array de objetos do tipo `OpenWeatherDataType` contendo os dados meteorológicos.
  * @returns Um elemento JSX que renderiza os dados meteorológicos em cards bonitos.
  */
-export default function WeatherCard({ weatherData }: { weatherData: standardWeatherType[] }) {
+export default function WeatherCard({ weatherData }: { weatherData: OpenWeatherDataType[] }) {
     const getWeatherIcon = (description: string) => {
         const desc = description.toLowerCase();
         if (desc.includes('chuva') || desc.includes('chuvisco')) return '🌧️';
@@ -24,13 +24,13 @@ export default function WeatherCard({ weatherData }: { weatherData: standardWeat
     };
 
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ">
             {/* Grid de horários */}
-            <div className="md:flex gap-2 grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
                 {weatherData.map((data, index) => (
                     <div
                         key={index}
-                        className="bg-white/70 rounded-lg p-4 text-center hover:bg-white/90 transition-all duration-200 border border-white/50"
+                        className="flex flex-col justify-around bg-white/70 rounded-lg p-4 text-center hover:bg-white/90 transition-all duration-200 border border-white/50 overflow-hidden"
                     >
                         {/* Horário */}
                         <div className="mb-3">
@@ -57,14 +57,14 @@ export default function WeatherCard({ weatherData }: { weatherData: standardWeat
                         {/* Detalhes */}
                         <div className="space-y-1">
                             {data.probabilidadeChuva !== null && (
-                                <div className="text-xs">
-                                    <span className="text-blue-600">💧 {data.probabilidadeChuva}%</span>
+                                <div className="text-xs ">
+                                    <span className="text-blue-600 whitespace-nowrap">💧 {data.probabilidadeChuva}%</span>
                                 </div>
                             )}
 
                             {data.velocidadeVento !== null && (
                                 <div className="text-xs">
-                                    <span className="text-green-600">💨 {data.velocidadeVento} km/h</span>
+                                    <span className="text-green-600 whitespace-nowrap ">💨 {data.velocidadeVento} km/h</span>
                                 </div>
                             )}
                         </div>

@@ -1,4 +1,4 @@
-import { standardWeatherType } from "@/types/standardWeatherType";
+import { OpenWeatherDataType } from "@/types/openWeatherType";
 
 const API_KEY = process.env.OPENWEATHER_API_KEY;
 
@@ -39,19 +39,19 @@ export async function getOpenweatherFridayForecast() {
 
   const response = await fetch(url, {
     // CACHE CONFIGURADO: Next.js vai armazenar a resposta desta API
-    // e reutilizar pelos próximos 43200 segundos (12 horas)
-    next: { revalidate: 43200 }, // Cache por 12 horas (43200 segundos)
+    // e reutilizar pelos próximos 86400 segundos (24 horas)
+    next: { revalidate: 86400 }, // Cache por 24 horas (86400 segundos)
 
     // COMO FUNCIONA:
     // 1ª chamada: Faz requisição real à API OpenWeather → dados salvos no cache
-    // 2ª-Nª chamada (próximas 12h): Usa dados do cache → SEM nova requisição à API
-    // Após 12h: Cache expira → próxima chamada faz nova requisição à API
+    // 2ª-Nª chamada (próximas 24h): Usa dados do cache → SEM nova requisição à API
+    // Após 24h: Cache expira → próxima chamada faz nova requisição à API
   });
   if (!response.ok) {
     throw new Error(`Erro ao buscar previsão: ${response.statusText}`);
   }
   const data = await response.json();
-  console.log("Dados da API:", data);
+  // console.log("Dados da API:", data);
 
   // Filtra para sexta-feira (0=domingo, 5=sexta)
   const fridayForecasts = data.list.filter((item: WeatherData) => {
@@ -68,7 +68,7 @@ export async function getOpenweatherFridayForecast() {
    * O código utiliza o método `Array.prototype.map`, que retorna um novo array aplicando a função fornecida a cada elemento.
    * Portanto, não é necessário um `return` explícito no nível superior, pois o resultado do `map` é atribuído diretamente a `StandardWeatherData`.
    */
-  const openweatherData: standardWeatherType[] = fridayForecasts.map(
+  const openweatherData: OpenWeatherDataType[] = fridayForecasts.map(
     (item: WeatherData) => ({
       fonte: "OpenWeather",
       dataHora: new Date(item.dt * 1000).toLocaleString("pt-BR", {
@@ -81,7 +81,7 @@ export async function getOpenweatherFridayForecast() {
         : null, // Formatado com 2 casas decimais
       velocidadeVento: item.wind.speed
         ? parseFloat((item.wind.speed * 3.6).toFixed(0))
-        : null, 
+        : null,
     })
   );
 
@@ -89,7 +89,7 @@ export async function getOpenweatherFridayForecast() {
   const filteredData = openweatherData.filter((item) => {
     const timePart = item.dataHora.split(", ")[1]; // Extrai "HH:MM:SS"
     const hour = parseInt(timePart.split(":")[0]); // Extrai a hora
-    return hour >= 9 && hour <= 23; // Só horários >= 9h
+    return hour >= 6 && hour <= 23; // Só horários >= 9h
   });
 
   return { openweatherData: filteredData };
