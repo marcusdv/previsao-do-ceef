@@ -1,6 +1,6 @@
 // Cards
-import OpenWeatherCard from "@/components/OpenWeatherCard";
-import AccuWeatherCard from "@/components/AccuWeatherCard";
+import OpenWeatherCard from "../components/OpenWeatherCard";
+import AccuWeatherCard from "../components/AccuWeatherCard";
 
 // Dados
 import { getOpenweatherFridayForecast } from "@/services/openweather"
