@@ -14,6 +14,28 @@ interface WeatherData {
   wind: { speed: number };
 }
 
+// Função para determinar o tempo de cache baseado no dia da semana
+function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
+  
+  // ESTRATÉGIA INTELIGENTE DE CACHE:
+  
+  // Segunda a sexta (1-5): Cache de 24h
+  // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
+  // - Cache mais curto para manter dados atualizados quando são úteis
+  if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+    return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
+  }
+  
+  // Fim de semana (sábado e domingo): Cache de 72h  
+  // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
+  // - Cache mais longo para evitar requisições desnecessárias
+  // - Economiza chamadas da API que não trariam dados úteis
+  return { shouldRequest: true, cacheTime: 259200 }; // 72 horas (3 dias)
+}
+
+
 /**
  * Busca a previsão do tempo para sexta-feira em uma localização específica (CEEF) utilizando a API do OpenWeather.
  *
@@ -32,15 +54,19 @@ export async function getOpenweatherFridayForecast() {
     throw new Error("API key for OpenWeather is not set.");
   }
 
+  // Verifica qual tempo de cache usar baseado no dia da semana
+  const { cacheTime } = shouldMakeApiRequest();
+  
   // Coordenadas fixas para CEEF (Centro de Educação Física e Esporte da UFBA)
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;
   const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`;
 
   const response = await fetch(url, {
-    // CACHE CONFIGURADO: Next.js vai armazenar a resposta desta API
-    // e reutilizar pelos próximos 86400 segundos (24 horas)
-    next: { revalidate: 86400 }, // Cache por 24 horas (86400 segundos)
+    // CACHE INTELIGENTE: Varia entre 24h (segunda-sexta) e 72h (fim de semana)
+    // Segunda a sexta: 24h de cache (dados frescos quando possível obter sexta-feira)
+    // Fim de semana: 72h de cache (evita requisições que não trarão dados úteis)
+    next: { revalidate: cacheTime },
 
     // COMO FUNCIONA:
     // 1ª chamada: Faz requisição real à API OpenWeather → dados salvos no cache

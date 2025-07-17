@@ -27,6 +27,22 @@ export function AccuweatherCard({ data, className }: Props) {
         });
     };
 
+    // Fases da Lua traduzidas
+    const translateMoonPhase = (phase: string) => {
+        const phases: { [key: string]: string } = {
+            'NewMoon': 'Nova',
+            'WaxingCrescent': 'Crescente',
+            'First': 'Quarto Crescente',
+            'WaxingGibbous': 'Gibosa Crescente',
+            'Full': 'Cheia',
+            'WaningGibbous': 'Gibosa Minguante',
+            'Last': 'Quarto Minguante',
+            'WaningCrescent': 'Minguante',
+        };
+
+        return phases[phase] || phase;
+    };
+
     return (
         <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>
             {/* Header do Card */}
@@ -110,8 +126,8 @@ export function AccuweatherCard({ data, className }: Props) {
                 {sun && (
                     <div className="text-center p-2 bg-yellow-100 rounded">
                         <p className="font-medium text-yellow-800 mb-1">☀️ Sol</p>
-                        <p>🌅 {formatTime(sun.Rise)}</p>
-                        <p>🌇 {formatTime(sun.Set)}</p>
+                        <p>🌅 Nasce {formatTime(sun.Rise)}</p>
+                        <p>🌇 Se põe {formatTime(sun.Set)}</p>
                     </div>
                 )}
 
@@ -119,9 +135,9 @@ export function AccuweatherCard({ data, className }: Props) {
                 {moon && (
                     <div className="text-center p-2 bg-gray-100 rounded">
                         <p className="font-medium text-gray-800 mb-1">🌙 Lua</p>
-                        <p>{moon.Rise ? `🌔 ${formatTime(moon.Rise)}` : "🌔 Não nasce"}</p>
-                        <p>🌘 {formatTime(moon.Set)}</p>
-                        <p className="text-xs">{moon.Phase} ({moon.Age} dias)</p>
+                        <p>{moon.Rise ? `🌔 ${formatTime(moon.Rise)}` : "🌔 Não nasce ao dia"}</p>
+                        <p>🌘 Se põe {formatTime(moon.Set)}</p>
+                        <p className="text-xs">{translateMoonPhase(moon.Phase)} ({moon.Age} dias)</p>
                     </div>
                 )}
             </div>

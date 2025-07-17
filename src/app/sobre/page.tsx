@@ -8,12 +8,12 @@ export default function Sobre() {
         <div className="space-y-8 text-lg leading-relaxed">
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-              O que é o Sexta Tempo?
+              O que é o Farmatempo?
             </h2>
             <p>
-              O <strong>Sexta Tempo</strong> é uma aplicação web especializada em mostrar 
-              a previsão do tempo especificamente para as sextas-feiras no bairro de 
-              <strong> Ondina</strong>, em Salvador-BA.
+              O <strong>Farmatempo</strong> é uma aplicação web especializada em mostrar 
+              a previsão do tempo para o dia do vôlei do curso de farmácia da 
+              <strong> UFBA</strong> (Universidade Federal da Bahia), em Salvador-BA.
             </p>
           </section>
 
@@ -22,10 +22,10 @@ export default function Sobre() {
               Por que foi criado?
             </h2>
             <p>
-              Ondina é um dos bairros mais procurados de Salvador para curtir a praia, 
-              eventos e a vida noturna, especialmente nas sextas-feiras. O app foi 
-              desenvolvido para ajudar moradores e visitantes a se programarem melhor 
-              para aproveitar tudo que a região oferece.
+              Os estudantes de farmácia da UFBA têm seu dia especial de vôlei e precisam 
+              se programar com antecedência para saber se o tempo estará favorável. O app foi 
+              desenvolvido para ajudar os alunos a se organizarem melhor e aproveitarem 
+              ao máximo seu momento de lazer e confraternização.
             </p>
           </section>
 
@@ -36,21 +36,21 @@ export default function Sobre() {
             <div className="space-y-3">
               <p>🌤️ <strong>Consulta automática:</strong> O app busca a previsão do tempo para a próxima sexta-feira</p>
               <p>📱 <strong>Interface responsiva:</strong> Funciona perfeitamente em celulares, tablets e desktops</p>
-              <p>🎯 <strong>Foco em Ondina:</strong> Informações específicas para o bairro que você quer conhecer</p>
+              <p>� <strong>Foco no vôlei:</strong> Informações específicas para o dia do jogo</p>
               <p>⚡ <strong>Rápido e simples:</strong> Informação direta, sem complicações</p>
             </div>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-              Ideal para quem...
+              Ideal para...
             </h2>
             <ul className="list-disc list-inside space-y-2">
-              <li>Quer curtir a praia de Ondina nas sextas-feiras</li>
-              <li>Planeja eventos na região</li>
-              <li>Trabalha ou estuda em Ondina</li>
-              <li>Gosta de se programar com antecedência</li>
-              <li>Quer aproveitar a vida noturna local</li>
+              <li>Estudantes de farmácia da UFBA</li>
+              <li>Quem participa do vôlei de sexta-feira</li>
+              <li>Organizadores de eventos esportivos da faculdade</li>
+              <li>Quem gosta de se programar com antecedência</li>
+              <li>Galera que não quer perder o jogo por causa da chuva</li>
             </ul>
           </section>
 

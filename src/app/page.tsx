@@ -21,8 +21,8 @@ export default async function Home() {
 
         {/* Grid com breakpoint xxl */}
         <div className="grid grid-cols-1 xxl:grid-cols-2 gap-4 w-full max-w-11/12">
-          <WeatherCard weatherData={openweatherData} />
-          {accuweatherData && <AccuweatherCard data={accuweatherData} className="col-span-2" />}
+          <WeatherCard weatherData={openweatherData} className={"col-span-2"}/>
+          {accuweatherData && <AccuweatherCard data={accuweatherData} className={"col-span-2"} />}
         </div>
       </div>
 
