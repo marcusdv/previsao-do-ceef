@@ -1,8 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
-
 // Cards
-import WeatherCard from "@/components/OpenWeatherCard";
+import OpenWeatherCard from "@/components/OpenWeatherCard";
 import AccuweatherCard from "@/components/AccuweatherCard";
 
 // Dados
@@ -31,7 +28,7 @@ export default async function Home() {
 
         {/* Grid com breakpoint xxl */}
         <div className="grid grid-cols-1 xxl:grid-cols-2 gap-4 w-full max-w-11/12">
-          {openweatherData && <WeatherCard weatherData={openweatherData} className={"col-span-2"} />}
+          {openweatherData && <OpenWeatherCard weatherData={openweatherData} className={"col-span-2"} />}
           {accuweatherData && <AccuweatherCard data={accuweatherData} className={"col-span-2"} />}
         </div>
       </div>
