@@ -1,6 +1,6 @@
 // Cards
 import OpenWeatherCard from "@/components/OpenWeatherCard";
-import AccuweatherCard from "@/components/AccuweatherCard";
+import AccuWeatherCard from "@/components/AccuWeatherCard";
 
 // Dados
 import { getOpenweatherFridayForecast } from "@/services/openweather"
@@ -29,7 +29,7 @@ export default async function Home() {
         {/* Grid com breakpoint xxl */}
         <div className="grid grid-cols-1 xxl:grid-cols-2 gap-4 w-full max-w-11/12">
           {openweatherData && <OpenWeatherCard weatherData={openweatherData} className={"col-span-2"} />}
-          {accuweatherData && <AccuweatherCard data={accuweatherData} className={"col-span-2"} />}
+          {accuweatherData && <AccuWeatherCard data={accuweatherData} className={"col-span-2"} />}
         </div>
       </div>
 
