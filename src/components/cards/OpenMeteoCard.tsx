@@ -104,7 +104,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
     <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>
       {/* Header do Card */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-gray-800">OpenMeteo - Previsão com as coordenadas do CEEF</h3>
+        <h3 className="text-xl font-bold text-gray-800">OpenMeteo</h3>
         <div className="bg-teal-100 text-teal-800 px-2 py-1 rounded text-sm font-medium">
           API Gratuita
         </div>
