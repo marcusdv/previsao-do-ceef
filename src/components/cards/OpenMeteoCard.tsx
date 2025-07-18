@@ -1,11 +1,20 @@
 import { OpenMeteoDataType } from "@/services/openmeteo";
 
 interface Props {
-  data: OpenMeteoDataType[];
+  data: OpenMeteoDataType[] | null; // Permite que os dados sejam nulos
   className?: string;
 }
 
 export default function OpenMeteoCard({ data, className }: Props) {
+  if (!data || data.length === 0) {
+    return (
+      <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
+        <h3 className="text-xl font-bold text-gray-800">OpenMeteo</h3>
+        <p>Dados não disponíveis</p>
+      </div>
+    );
+  }
+
   const getWeatherIcon = (description: string) => {
     const desc = description.toLowerCase();
     if (desc.includes('chuva') || desc.includes('garoa')) return '🌧️';
@@ -88,6 +97,8 @@ export default function OpenMeteoCard({ data, className }: Props) {
   };
 
   const uvInfo = getUVInfo(avgUV);
+
+
 
   return (
     <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>

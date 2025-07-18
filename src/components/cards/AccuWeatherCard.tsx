@@ -1,12 +1,21 @@
 import { AccuWeatherDataType } from "@/types/accuweatherType";
 
 interface Props {
-    data: AccuWeatherDataType;
+    data: AccuWeatherDataType | null; // Permite que os dados sejam nulos
     className?: string; // Permite passar uma classe CSS opcional
 }
 
 export default function AccuWeatherCard({ data, className }: Props) {
-    const {  temperature, realFeelTemperature, day, night, sun, moon } = data;
+    if (!data) {
+        return (
+            <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
+                <h3 className="text-xl font-bold text-gray-800">AccuWeather</h3>
+                <p>Dados não disponíveis</p>
+            </div>
+        );
+    }
+
+    const { temperature, realFeelTemperature, day, night, sun, moon } = data;
 
 
     // Formatar a data
@@ -44,7 +53,7 @@ export default function AccuWeatherCard({ data, className }: Props) {
     };
 
     const translateCardinalDirection = (direction: string) => {
-        const directionOBJ: {[key: string]: string} = {
+        const directionOBJ: { [key: string]: string } = {
             'N': 'Norte',
             'NE': 'Nordeste',
             'E': 'Leste',
@@ -56,6 +65,8 @@ export default function AccuWeatherCard({ data, className }: Props) {
         }
         return directionOBJ[direction] || direction;
     }
+
+
 
     return (
         <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>

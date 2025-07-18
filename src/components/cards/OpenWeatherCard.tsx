@@ -6,7 +6,16 @@ import { OpenWeatherDataType } from "@/types/openWeatherType"
  * @param weatherData - Array de objetos do tipo `OpenWeatherDataType` contendo os dados meteorológicos.
  * @returns Um elemento JSX que renderiza os dados meteorológicos em cards bonitos.
  */
-export default function OpenWeatherCard({ weatherData, className }: { weatherData: OpenWeatherDataType[], className?: string }) {
+export default function OpenWeatherCard({ data, className }: { data: OpenWeatherDataType[] | null, className?: string }) {
+    if (!data || data.length === 0) {
+        return (
+            <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
+                <h3 className="text-xl font-bold text-gray-800">OpenWeather</h3>
+                <p>Dados não disponíveis</p>
+            </div>
+        );
+    }
+
     const getWeatherIcon = (description: string) => {
         const desc = description.toLowerCase();
         if (desc.includes('chuva') || desc.includes('chuvisco')) return '🌧️';
@@ -23,12 +32,14 @@ export default function OpenWeatherCard({ weatherData, className }: { weatherDat
         return timePart ? timePart.substring(0, 5) : '00:00'; // Pega apenas HH:MM
     };
 
+
+
     return (
         <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ${className}`}>
             <h2 className="text-xl font-bold mb-4 text-gray-800">OppenWeather - Previsão com as coordenadas do CEEF</h2>
             {/* Grid de horários */}
             <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
-                {weatherData.map((data, index) => (
+                {data.map((inf, index) => (
                     <div
                         key={index}
                         className="flex flex-col justify-around bg-white/70 rounded-lg p-4 text-center hover:bg-white/90 transition-all duration-200 border border-white/50 overflow-hidden"
@@ -36,36 +47,36 @@ export default function OpenWeatherCard({ weatherData, className }: { weatherDat
                         {/* Horário */}
                         <div className="mb-3">
                             <h3 className="text-lg font-semibold text-gray-700">
-                                {formatTime(data.dataHora)}
+                                {formatTime(inf.dataHora)}
                             </h3>
                         </div>
 
                         {/* Ícone e temperatura */}
                         <div className="mb-4">
                             <div className="text-3xl mb-2">
-                                {getWeatherIcon(data.descricao)}
+                                {getWeatherIcon(inf.descricao)}
                             </div>
                             <div className="text-xl font-bold text-gray-800">
-                                {data.temperatura}°C
+                                {inf.temperatura}°C
                             </div>
                         </div>
 
                         {/* Descrição */}
                         <p className="text-xs text-gray-600 capitalize mb-3 leading-tight">
-                            {data.descricao}
+                            {inf.descricao}
                         </p>
 
                         {/* Detalhes */}
                         <div className="space-y-1">
-                            {data.probabilidadeChuva !== null && (
+                            {inf.probabilidadeChuva !== null && (
                                 <div className="text-xs ">
-                                    <span className="text-blue-600 whitespace-nowrap">💧 {data.probabilidadeChuva}%</span>
+                                    <span className="text-blue-600 whitespace-nowrap">💧 {inf.probabilidadeChuva}%</span>
                                 </div>
                             )}
 
-                            {data.velocidadeVento !== null && (
+                            {inf.velocidadeVento !== null && (
                                 <div className="text-xs">
-                                    <span className="text-green-600 whitespace-nowrap ">💨 {data.velocidadeVento} km/h</span>
+                                    <span className="text-green-600 whitespace-nowrap ">💨 {inf.velocidadeVento} km/h</span>
                                 </div>
                             )}
                         </div>
@@ -78,7 +89,7 @@ export default function OpenWeatherCard({ weatherData, className }: { weatherDat
                 <p className="text-sm text-gray-600 ">
                     Previsão com as coordenadas específicas do CEEF
                 </p>
-                <p className="text-sm text-gray-600">Fonte: {weatherData[0]?.fonte}</p>
+                <p className="text-sm text-gray-600">Fonte: {data[0]?.fonte}</p>
             </div>
 
         </div>
