@@ -17,11 +17,11 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   
   // ESTRATÉGIA INTELIGENTE DE CACHE:
   
-  // Segunda a sexta (1-5): Cache de 24h
+  // Segunda a sexta (1-5): Cache de 12h
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
+    return { shouldRequest: true, cacheTime: 1  }; // 12 horas
   }
   
   // Fim de semana (sábado e domingo): Cache de 72h  
