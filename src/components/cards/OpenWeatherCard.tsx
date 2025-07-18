@@ -86,7 +86,7 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
 
             {/* fonte dos dados */}
             <div className="text-right mt-4 flex justify-between">
-                <p className="text-sm text-gray-600 ">
+                <p className="text-sm text-gray-600 hidden md:block ">
                     Previsão com as coordenadas específicas do CEEF
                 </p>
                 <p className="text-sm text-gray-600">Fonte: {data[0]?.fonte}</p>

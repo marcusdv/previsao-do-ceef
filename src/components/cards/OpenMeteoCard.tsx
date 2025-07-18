@@ -114,26 +114,26 @@ export default function OpenMeteoCard({ data, className }: Props) {
       <div className="grid grid-cols-4 gap-3 mb-6">
         {/* Temperatura Média */}
         <div className="text-center p-3 bg-teal-50 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-600 mb-1">Temp. Média</h4>
-          <p className="text-2xl font-bold text-teal-600">{avgTemp}°C</p>
+          <h4 className="text-xs md:text-sm font-medium text-gray-600 mb-1">Temp. Média</h4>
+          <p className="text-lg md:text-2xl font-bold text-teal-600">{avgTemp}°C</p>
         </div>
 
         {/* Máx. Chuva */}
         <div className="text-center p-3 bg-cyan-50 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-600 mb-1">Máx. Chuva</h4>
-          <p className="text-2xl font-bold text-cyan-600">{maxRain}%</p>
+          <h4 className="text-xs md:text-smfont-medium text-gray-600 mb-1">Máx. Chuva</h4>
+          <p className="text-lg md:text-2xl font-bold text-cyan-600">{maxRain}%</p>
         </div>
 
         {/* Vento Médio */}
         <div className="text-center p-3 bg-indigo-50 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-600 mb-1">Vento Médio</h4>
-          <p className="text-2xl font-bold text-indigo-600">{avgWind} km/h</p>
+          <h4 className="text-xs md:text-sm font-medium text-gray-600 mb-1">Vento Médio</h4>
+          <p className="text-md md:text-2xl font-bold text-indigo-600">{avgWind} km/h</p>
         </div>
 
         {/* UV Médio */}
         <div className="text-center p-3 bg-amber-50 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-600 mb-1">UV médio entre (13h-16h)</h4>
-          <p className="text-2xl font-bold text-amber-600">{avgUV.toFixed(1)}</p>
+          <h4 className="text-xs md:text-sm font-medium text-gray-600 mb-1">UV médio entre (13h-16h)</h4>
+          <p className="text-lg md:text-2xl font-bold text-amber-600">{avgUV.toFixed(1)}</p>
         </div>
       </div>
 
@@ -180,7 +180,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
         {/* Informações de UV */}
         <div className="rounded-lg mb-3">
           <div className="flex items-center justify-between mb-2">
-            <h6 className="font-semibold text-gray-800 ">☀️ Índice UV (13h-16h)</h6>
+            <h6 className="font-semibold text-gray-800 ">☀️ Índice UV</h6>
             <span className={`font-bold ${uvInfo.cor}`}>
               {avgUV.toFixed(1)} - {uvInfo.nivel}
             </span>
@@ -198,7 +198,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
       {/* Footer */}
       <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
-        <p className="text-sm text-gray-600">
+        <p className="hidden md:block text-sm text-gray-600">
           Previsão com as coordenadas específicas do CEEF
         </p>
         <p className="text-sm text-gray-600">
