@@ -25,7 +25,7 @@ export default function OpenWeatherCard({ weatherData, className }: { weatherDat
 
     return (
         <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ${className}`}>
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Previsão do Tempo - CEEF</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-800">OppenWeather - Previsão com as coordenadas do CEEF</h2>
             {/* Grid de horários */}
             <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
                 {weatherData.map((data, index) => (
@@ -74,9 +74,13 @@ export default function OpenWeatherCard({ weatherData, className }: { weatherDat
             </div>
 
             {/* fonte dos dados */}
-            <div className="text-right mt-4">
+            <div className="text-right mt-4 flex justify-between">
+                <p className="text-sm text-gray-600 ">
+                    Previsão com as coordenadas específicas do CEEF
+                </p>
                 <p className="text-sm text-gray-600">Fonte: {weatherData[0]?.fonte}</p>
             </div>
+
         </div>
     )
 }

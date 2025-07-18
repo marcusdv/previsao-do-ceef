@@ -48,8 +48,8 @@ export default function OpenMeteoCard({ data, className }: Props) {
     const hour = parseInt(formatTime(item.dataHora).split(':')[0]);
     return hour >= 13 && hour <= 16;
   });
-  const avgUV = uvData13to16.length > 0 
-    ? uvData13to16.reduce((sum, item) => sum + (item.indiceUV || 0), 0) / uvData13to16.length 
+  const avgUV = uvData13to16.length > 0
+    ? uvData13to16.reduce((sum, item) => sum + (item.indiceUV || 0), 0) / uvData13to16.length
     : 0;
 
   // Função para classificar UV e dar recomendações
@@ -93,7 +93,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
     <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>
       {/* Header do Card */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Open-Meteo</h3>
+        <h3 className="text-xl font-bold text-gray-800">OpenMeteo - Previsão com as coordenadas do CEEF</h3>
         <div className="bg-teal-100 text-teal-800 px-2 py-1 rounded text-sm font-medium">
           API Gratuita
         </div>
@@ -165,7 +165,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
         <p className="text-sm text-gray-700 mb-3 capitalize">
           {data[0]?.descricao}
         </p>
-        
+
         {/* Informações de UV */}
         <div className="rounded-lg mb-3">
           <div className="flex items-center justify-between mb-2">
@@ -186,8 +186,11 @@ export default function OpenMeteoCard({ data, className }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="mt-4 pt-4 border-t border-gray-200 text-center">
-        <p className="text-sm text-gray-600 text-right">
+      <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
+        <p className="text-sm text-gray-600">
+          Previsão com as coordenadas específicas do CEEF
+        </p>
+        <p className="text-sm text-gray-600">
           Fonte: Open-Meteo API
         </p>
       </div>
