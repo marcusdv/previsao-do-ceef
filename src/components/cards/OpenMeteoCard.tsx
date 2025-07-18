@@ -179,8 +179,8 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
         {/* Informações de UV */}
         <div className="rounded-lg mb-3">
-          <div className="flex items-center justify-between mb-2">
-            <h6 className="font-semibold text-gray-800 ">☀️ Índice UV</h6>
+          <div className="flex items-center mb-2">
+            <h6 className="font-semibold text-gray-800 mr-2">☀️ Índice UV:</h6>
             <span className={`font-bold ${uvInfo.cor}`}>
               {avgUV.toFixed(1)} - {uvInfo.nivel}
             </span>
@@ -192,7 +192,6 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
         <div className="flex justify-between text-xs text-gray-600">
           <span>🌡️ Variação: {Math.min(...data.map(d => parseFloat(String(d.temperatura))))}° - {Math.max(...data.map(d => parseFloat(String(d.temperatura))))}°</span>
-          <span>⏰ {data.length} previsões horárias</span>
         </div>
       </div>
 

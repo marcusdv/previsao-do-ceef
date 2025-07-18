@@ -2,6 +2,7 @@
 import OpenWeatherCard from "../components/cards/OpenWeatherCard";
 import AccuWeatherCard from "../components/cards/AccuWeatherCard";
 import OpenMeteoCard from "../components/cards/OpenMeteoCard";
+import Image from "next/image";
 
 // Serviços para buscar dados das APIs meteorológicas
 import { getOpenweatherFridayForecast } from "@/services/openweather"
@@ -16,7 +17,7 @@ import { getOpenMeteoFridayForecast } from "@/services/openmeteo";
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("pt-BR", {
     day: "2-digit",
-    month: "2-digit", 
+    month: "2-digit",
     year: "numeric",
   });
 };
@@ -57,20 +58,34 @@ export default async function Home() {
     // Container principal com altura mínima da tela
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col items-center justify-center">
-        
-        {/* Título principal da aplicação */}
-        <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center mt-6">CEEFguru</h1>
-        
+
+        {/* Header com favicon e título */}
+        <header className="flex items-center mb-2 mt-6 w-8/12 justify-center">
+          <Image
+            src="/favicon.ico"
+            alt="CEEFguru Logo"
+            width={32}
+            height={32}
+            className="mr-3"
+          />
+          {/* Título principal da aplicação */}
+          <h1 className="text-4xl font-bold text-gray-800">CEEFguru</h1>
+        </header>
+
         {/* Subtítulo com data da sexta-feira (se disponível) */}
         <h2 className="text-xl text-gray-600 mb-8 text-center">
           Previsão do tempo para o vôlei de farmácia
-          {/* Mostra a data formatada apenas se AccuWeather retornou dados */}
-          {data.accuweatherData && <span> {formatDate(data.accuweatherData.date)}</span>}
+          {data.accuweatherData && (
+            <>
+              <br />
+              <span>{formatDate(data.accuweatherData.date)}</span>
+            </>
+          )}
         </h2>
 
         {/* col-span-2 em xxl para layout lado a lado em telas muito grandes */}
         <div className="grid grid-cols-1 xxl:grid-cols-2 gap-4 w-full max-w-11/12">
-          
+
           {/* Renderização condicional: só mostra card se tiver dados */}
           {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2"} />}
           {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />}

@@ -12,29 +12,47 @@ interface ForecastItem {
   indiceUV: number;
 }
 
+// Função para determinar o tempo de cache baseado no dia da semana
+function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
+
+  // ESTRATÉGIA INTELIGENTE DE CACHE:
+
+  // Segunda a sexta (1-5): Cache de 12h
+  // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
+  // - Cache mais curto para manter dados atualizados quando são úteis
+  if (dayOfWeek >= 0 && dayOfWeek <= 6) {
+    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
+  }
+
+  // Fim de semana (sábado e domingo): Cache de 72h
+  // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
+  // - Cache mais longo para evitar requisições desnecessárias
+  // - Economiza chamadas da API que não trariam dados úteis
+  return { shouldRequest: true, cacheTime: 259200 }; // 72 horas (3 dias)
+}
+
 export async function getOpenMeteoFridayForecast() {
+    
+
+  const { cacheTime } = shouldMakeApiRequest();
+
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m,uv_index&timezone=America/Bahia&forecast_days=7`;
 
-  try {
-    // Adiciona timeout de 10 segundos para evitar travamentos
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const response = await fetch(url, {
+    next: { revalidate: cacheTime }, // Cache de 12h
+  });
 
-    const response = await fetch(url, {
-      signal: controller.signal,
-      // Remove o cache do Next.js para funcionar no cliente
-      cache: 'no-store'
-    });
+  if (!response.ok) {
+    throw new Error(
+      `Erro ao buscar previsão Open-Meteo: ${response.statusText}`
+    );
+  }
 
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar previsão Open-Meteo: ${response.statusText}`);
-    }
-
-    const data = await response.json();
+  const data = await response.json();
 
   // Mapeia códigos meteorológicos para descrição
   const weatherCodeDescriptions: { [key: number]: string } = {
@@ -93,13 +111,7 @@ export async function getOpenMeteoFridayForecast() {
   }));
 
   return { openMeteoData };
-  
-  } catch (error) {
-    console.error('Erro ao buscar dados Open-Meteo:', error);
-    throw error; // Re-throw para que o Promise.allSettled possa capturar
-  }
 }
-
 export type OpenMeteoDataType = {
   fonte: "Open-Meteo";
   dataHora: string; // Formato "DD/MM/YYYY, HH:MM:SS"

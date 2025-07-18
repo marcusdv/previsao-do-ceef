@@ -21,11 +21,11 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   
   // ESTRATÉGIA INTELIGENTE DE CACHE:
   
-  // Segunda a sexta (1-5): Cache de 24h
+  // Segunda a sexta (1-5): Cache de 12h
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
+    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
   }
   
   // Fim de semana (sábado e domingo): Cache de 72h  
@@ -63,15 +63,15 @@ export async function getOpenweatherFridayForecast() {
   const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`;
 
   const response = await fetch(url, {
-    // CACHE INTELIGENTE: Varia entre 24h (segunda-sexta) e 72h (fim de semana)
-    // Segunda a sexta: 24h de cache (dados frescos quando possível obter sexta-feira)
+    // CACHE INTELIGENTE: Varia entre 12h (segunda-sexta) e 72h (fim de semana)
+    // Segunda a sexta: 12h de cache (dados frescos quando possível obter sexta-feira)
     // Fim de semana: 72h de cache (evita requisições que não trarão dados úteis)
     next: { revalidate: cacheTime },
 
     // COMO FUNCIONA:
     // 1ª chamada: Faz requisição real à API OpenWeather → dados salvos no cache
-    // 2ª-Nª chamada (próximas 24h): Usa dados do cache → SEM nova requisição à API
-    // Após 24h: Cache expira → próxima chamada faz nova requisição à API
+    // 2ª-Nª chamada (próximas 12h): Usa dados do cache → SEM nova requisição à API
+    // Após 12h: Cache expira → próxima chamada faz nova requisição à API
   });
   if (!response.ok) {
     throw new Error(`Erro ao buscar previsão: ${response.statusText}`);
