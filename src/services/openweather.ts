@@ -37,7 +37,7 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
 
 
 /**
- * Busca a previsão do tempo para sexta-feira em uma localização específica (CEEF) utilizando a API do OpenWeather.
+ * Busca a previsão do tempo para sexta-feira em uma localização específica (CEFE) utilizando a API do OpenWeather.
  *
  * - Utiliza coordenadas geográficas fixas (lat/lon) para a consulta.
  * - Monta a URL da API com os parâmetros necessários (incluindo unidade métrica e idioma português).
@@ -57,7 +57,7 @@ export async function getOpenweatherFridayForecast() {
   // Verifica qual tempo de cache usar baseado no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
   
-  // Coordenadas fixas para CEEF (Centro de Educação Física e Esporte da UFBA)
+  // Coordenadas fixas para CEE (Centro de Educação Física e Esporte da UFBA)
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;
   const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`;
