@@ -21,7 +21,7 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 1  }; // 12 horas
+    return { shouldRequest: true, cacheTime: 43200  }; // 12 horas
   }
   
   // Fim de semana (sábado e domingo): Cache de 72h  
