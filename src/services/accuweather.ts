@@ -34,6 +34,7 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
 export async function getAccuweatherFridayForecast() {
   // Determina a estratégia de cache baseada no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
+  console.log("Cache time for AccuWeather:", cacheTime);
   
   // 1. Busca a previsão do tempo para a cidade de Salvador(ID 43080)
   // 2. Monta a URL da API com os parâmetros necessários (incluindo unidade métrica e idioma português).
@@ -41,7 +42,7 @@ export async function getAccuweatherFridayForecast() {
     "https://dataservice.accuweather.com/forecasts/v1/daily/5day/43080?apikey=fF1ECmDWhCh9T82l1N1KYt0XqqBykamR&language=pt-br&metric=false&details=true";
 
   const response = await fetch(url, {
-    next: { revalidate: cacheTime }, // Cache dinâmico baseado no dia da semana
+    next: { revalidate: 60 }, // Cache dinâmico baseado no dia da semana
   });
 
   if (!response.ok) {

@@ -23,7 +23,7 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 0 && dayOfWeek <= 6) {
-    return { shouldRequest: true, cacheTime: 1 }; // 12 horas
+    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
   }
 
   // Fim de semana (sábado e domingo): Cache de 72h
@@ -37,13 +37,14 @@ export async function getOpenMeteoFridayForecast() {
     
 
   const { cacheTime } = shouldMakeApiRequest();
+  console.log("Cache time for OpenMeteo:", cacheTime);
 
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m,uv_index&timezone=America/Bahia&forecast_days=7`;
 
   const response = await fetch(url, {
-    next: { revalidate: cacheTime }, // Cache de 12h
+    next: { revalidate: 60 }, // Cache de 12h
   });
 
   if (!response.ok) {

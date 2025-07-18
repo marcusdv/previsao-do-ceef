@@ -25,7 +25,7 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 1 }; // 12 horas
+    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
   }
   
   // Fim de semana (sábado e domingo): Cache de 72h  
@@ -56,6 +56,7 @@ export async function getOpenweatherFridayForecast() {
 
   // Verifica qual tempo de cache usar baseado no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
+  console.log("Cache time for OpenWeather:", cacheTime);
   
   // Coordenadas fixas para CEE (Centro de Educação Física e Esporte da UFBA)
   const lat = -13.008085569770852;
@@ -66,7 +67,7 @@ export async function getOpenweatherFridayForecast() {
     // CACHE INTELIGENTE: Varia entre 12h (segunda-sexta) e 72h (fim de semana)
     // Segunda a sexta: 12h de cache (dados frescos quando possível obter sexta-feira)
     // Fim de semana: 72h de cache (evita requisições que não trarão dados úteis)
-    next: { revalidate: cacheTime },
+    next: { revalidate: 60 },
 
     // COMO FUNCIONA:
     // 1ª chamada: Faz requisição real à API OpenWeather → dados salvos no cache

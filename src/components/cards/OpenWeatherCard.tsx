@@ -38,7 +38,7 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
         <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ${className}`}>
             <h2 className="text-xl font-bold mb-4 text-gray-800">OppenWeather</h2>
             {/* Grid de horários */}
-            <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
+            <div className={`grid grid-cols-3 gap-2 md:grid-cols-${data.length} `}>
                 {data.map((inf, index) => (
                     <div
                         key={index}

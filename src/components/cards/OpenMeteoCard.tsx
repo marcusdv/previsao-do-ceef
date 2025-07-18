@@ -30,15 +30,6 @@ export default function OpenMeteoCard({ data, className }: Props) {
     return timePart ? timePart.substring(0, 5) : '00:00';
   };
 
-  if (!data || data.length === 0) {
-    return (
-      <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
-        <h3 className="text-xl font-bold text-gray-800">Open-Meteo</h3>
-        <p>Dados não disponíveis</p>
-      </div>
-    );
-  }
-
   // Calcular média de temperatura
   const avgTemp = Math.round(
     data.reduce((sum, item) => sum + parseFloat(String(item.temperatura || "0")), 0) / data.length
