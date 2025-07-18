@@ -9,13 +9,14 @@ import { getAccuweatherFridayForecast } from "@/services/accuweather";
 import { getOpenMeteoFridayForecast } from "@/services/openmeteo";
 
 // Formatar a data
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        });
-    };
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
+
 
 export default async function Home() {
   const { openweatherData } = await getOpenweatherFridayForecast();
@@ -27,7 +28,7 @@ export default async function Home() {
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center mt-6">Farmatempo</h1>
-        <h2 className="text-xl text-gray-600 mb-8 text-center">Previsão do tempo para o vôlei de farmácia 
+        <h2 className="text-xl text-gray-600 mb-8 text-center">Previsão do tempo para o vôlei de farmácia
           {accuweatherData && <span> {formatDate(accuweatherData.date)}</span>}</h2>
 
         {/* Grid com breakpoint xxl */}
