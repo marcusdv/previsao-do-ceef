@@ -59,7 +59,7 @@ export default async function Home() {
       <div className="flex-1 flex flex-col items-center justify-center">
         
         {/* Título principal da aplicação */}
-        <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center mt-6">Farmatempo</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center mt-6">CEEFguru</h1>
         
         {/* Subtítulo com data da sexta-feira (se disponível) */}
         <h2 className="text-xl text-gray-600 mb-8 text-center">
