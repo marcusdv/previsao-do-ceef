@@ -199,7 +199,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
       {/* Footer */}
       <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
         <p className="hidden md:block text-sm text-gray-600">
-          Previsão com as coordenadas específicas do CEFE
+          Previsão com as coordenadas específicas do CEEF
         </p>
         <p className="text-sm text-gray-600">
           Fonte: Open-Meteo API

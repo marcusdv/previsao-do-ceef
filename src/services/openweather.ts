@@ -37,7 +37,7 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
 
 
 /**
- * Busca a previsão do tempo para sexta-feira em uma localização específica (CEFE) utilizando a API do OpenWeather.
+ * Busca a previsão do tempo para sexta-feira em uma localização específica (CEEF) utilizando a API do OpenWeather.
  *
  * - Utiliza coordenadas geográficas fixas (lat/lon) para a consulta.
  * - Monta a URL da API com os parâmetros necessários (incluindo unidade métrica e idioma português).

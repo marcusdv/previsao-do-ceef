@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import HamburguerMenu from "@/components/HamburguerMenu";
 
 export const metadata: Metadata = {
-  title: "CEFEguru",
+  title: "CEEFguru",
   description: "Previsão do tempo para o treino de vôlei farmárcia",
 };
 
