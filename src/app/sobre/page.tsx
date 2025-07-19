@@ -7,10 +7,10 @@ export default function Sobre() {
         <div className="space-y-8 text-lg leading-relaxed">
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-              O que é o Farmatempo?
+              O que é o CEEFguru?
             </h2>
             <p>
-              O <strong>Farmatempo</strong> é uma aplicação web especializada em mostrar 
+              O <strong>CEEFguru</strong> é uma aplicação web especializada em mostrar 
               a previsão do tempo para o dia do vôlei do curso de farmácia da 
               <strong> UFBA</strong> (Universidade Federal da Bahia), em Salvador-BA.
             </p>
@@ -78,7 +78,7 @@ export default function Sobre() {
               Contribua com o projeto
             </h2>
             <p className="mb-4">
-              O Sexta Tempo é um projeto open source. Sinta-se à vontade para 
+              O CEEFguru é um projeto open source. Sinta-se à vontade para 
               contribuir com melhorias, sugestões ou reportar problemas!
             </p>
             <div className="flex justify-center space-x-4">
