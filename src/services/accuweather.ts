@@ -21,20 +21,19 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 43200  }; // 12 horas
+    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
   }
   
-  // Fim de semana (sábado e domingo): Cache de 72h  
+  // Fim de semana (sábado e domingo): Cache de 24h  
   // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
   // - Cache mais longo para evitar requisições desnecessárias
   // - Economiza chamadas da API que não trariam dados úteis
-  return { shouldRequest: true, cacheTime: 259200 }; // 72 horas (3 dias)
+  return { shouldRequest: true, cacheTime: 86400 }; // 24 horas (1 dia)
 }
 
 export async function getAccuweatherFridayForecast() {
   // Determina a estratégia de cache baseada no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
-  console.log("Cache time for AccuWeather:", cacheTime);
   
   // 1. Busca a previsão do tempo para a cidade de Salvador(ID 43080)
   // 2. Monta a URL da API com os parâmetros necessários (incluindo unidade métrica e idioma português).
@@ -42,7 +41,7 @@ export async function getAccuweatherFridayForecast() {
     "https://dataservice.accuweather.com/forecasts/v1/daily/5day/43080?apikey=fF1ECmDWhCh9T82l1N1KYt0XqqBykamR&language=pt-br&metric=false&details=true";
 
   const response = await fetch(url, {
-    next: { revalidate: 60 }, // Cache dinâmico baseado no dia da semana
+    next: { revalidate: cacheTime }, // Cache dinâmico baseado no dia da semana
   });
 
   if (!response.ok) {
