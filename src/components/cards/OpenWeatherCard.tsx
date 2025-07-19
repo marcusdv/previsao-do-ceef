@@ -18,8 +18,9 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
 
     const getWeatherIcon = (description: string) => {
         const desc = description.toLowerCase();
-        if (desc.includes('chuva') || desc.includes('chuvisco')) return '🌧️';
-        if (desc.includes('nuvem') || desc.includes('nublado')) return '☁️';
+        if (desc.includes('chuva')) return '🌧️';
+        if (desc.includes('chuvisco')) return '🌦️';
+        if (desc.includes('nuvem') || desc.includes('nublado')) return '⛅';
         if (desc.includes('sol') || desc.includes('limpo')) return '☀️';
         if (desc.includes('neve')) return '❄️';
         if (desc.includes('tempestade')) return '⛈️';

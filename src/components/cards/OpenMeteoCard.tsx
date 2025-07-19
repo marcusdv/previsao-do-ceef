@@ -15,13 +15,23 @@ export default function OpenMeteoCard({ data, className }: Props) {
     );
   }
 
-  const getWeatherIcon = (description: string) => {
+  const getWeatherIcon = (description: string, probabilidadeChuva: number = 0) => {
     const desc = description.toLowerCase();
+    
+    // Se a probabilidade de chuva for baixa (menos de 40%), priorize ícones mais positivos
+    if (probabilidadeChuva < 40) {
+      if (desc.includes('limpo') || desc.includes('céu limpo')) return '☀️';
+      if (desc.includes('nuvem') || desc.includes('nublado')) return '🌤️'; // Parcialmente nublado (mais otimista)
+      if (desc.includes('chuva') || desc.includes('garoa')) return '⛅'; // Sol com algumas nuvens
+      return '🌤️'; // Padrão otimista
+    }
+    
+    // Para probabilidades altas (40% ou mais), mantenha os ícones originais
+    if (desc.includes('tempestade')) return '⛈️';
     if (desc.includes('chuva') || desc.includes('garoa')) return '🌧️';
     if (desc.includes('nuvem') || desc.includes('nublado')) return '☁️';
     if (desc.includes('limpo') || desc.includes('céu limpo')) return '☀️';
     if (desc.includes('neblina')) return '🌫️';
-    if (desc.includes('tempestade')) return '⛈️';
     return '🌤️';
   };
 
@@ -138,7 +148,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
                 {formatTime(item.dataHora)}
               </div>
               <div className="text-xl mb-1">
-                {getWeatherIcon(item.descricao)}
+                {getWeatherIcon(item.descricao, item.probabilidadeChuva || 0)}
               </div>
               <div className="text-sm font-bold text-gray-800">
                 {item.temperatura}°C
