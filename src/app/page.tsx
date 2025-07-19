@@ -54,6 +54,8 @@ export default async function Home() {
     openMeteoData: openmeteoResult.status === 'fulfilled' ? openmeteoResult.value.openMeteoData : null
   };
 
+  console.log("Dados obtidos:", data.openMeteoData)
+
   return (
     // Container principal com altura mínima da tela
     <div className="min-h-screen flex flex-col">
@@ -75,10 +77,10 @@ export default async function Home() {
         {/* Subtítulo com data da sexta-feira (se disponível) */}
         <h2 className="text-xl text-gray-600 mb-8 text-center">
           Previsão do tempo para o vôlei de farmácia
-          {data.accuweatherData && (
+          {data.openMeteoData[0].dataHora && (
             <>
               <br />
-              <span>{formatDate(data.accuweatherData.date)}</span>
+              {data.openMeteoData[0].dataHora.split(",")[0]}
             </>
           )}
         </h2>
