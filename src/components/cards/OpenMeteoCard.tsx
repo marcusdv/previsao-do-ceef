@@ -17,7 +17,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
   const getWeatherIcon = (description: string, probabilidadeChuva: number = 0) => {
     const desc = description.toLowerCase();
-    
+
     // Se a probabilidade de chuva for baixa (menos de 40%), priorize ícones mais positivos
     if (probabilidadeChuva < 40) {
       if (desc.includes('limpo') || desc.includes('céu limpo')) return '☀️';
@@ -25,7 +25,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
       if (desc.includes('chuva') || desc.includes('garoa')) return '⛅'; // Sol com algumas nuvens
       return '🌤️'; // Padrão otimista
     }
-    
+
     // Para probabilidades altas (40% ou mais), mantenha os ícones originais
     if (desc.includes('tempestade')) return '⛈️';
     if (desc.includes('chuva') || desc.includes('garoa')) return '🌧️';
@@ -97,7 +97,48 @@ export default function OpenMeteoCard({ data, className }: Props) {
     }
   };
 
+  // Função para classificar vento e dar informações sobre o impacto no vôlei
+  const getWindInfo = (windSpeed: number) => {
+    if (windSpeed <= 5) {
+      return {
+        nivel: "Calmaria",
+        cor: "text-green-600",
+        efeito: "Sem efeito perceptível na bola.",
+        icone: "🌬️"
+      };
+    } else if (windSpeed <= 15) {
+      return {
+        nivel: "Vento Fraco",
+        cor: "text-blue-600",
+        efeito: "Pouco efeito, pode desviar levemente bolas altas.",
+        icone: "💨"
+      };
+    } else if (windSpeed <= 25) {
+      return {
+        nivel: "Vento Moderado",
+        cor: "text-yellow-600",
+        efeito: "Pode atrapalhar saques, passes e levantamentos.",
+        icone: "💨"
+      };
+    } else if (windSpeed <= 35) {
+      return {
+        nivel: "Vento Forte",
+        cor: "text-orange-600",
+        efeito: "Dificulta controle da bola, aumenta erros e desvios.",
+        icone: "🌬️"
+      };
+    } else {
+      return {
+        nivel: "Muito Forte",
+        cor: "text-red-600",
+        efeito: "Jogo prejudicado, difícil manter precisão e segurança.",
+        icone: "🌪️"
+      };
+    }
+  };
+
   const uvInfo = getUVInfo(avgUV);
+  const windInfo = getWindInfo(avgWind);
 
 
 
@@ -141,7 +182,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
       {/* Previsão por Horário */}
       <div className="mb-6">
         <h5 className="font-semibold text-gray-800 mb-3">📅 Previsão Horária (12h às 19h)</h5>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 xxl:grid-cols-8 gap-2">
           {data.map((item, index) => (
             <div key={index} className="bg-gray-50 p-3 rounded-lg text-center hover:bg-gray-100 transition-colors">
               <div className="text-xs font-medium text-gray-600 mb-1">
@@ -170,6 +211,8 @@ export default function OpenMeteoCard({ data, className }: Props) {
       {/* Condições Gerais */}
       <div className="bg-teal-50 p-4 rounded-lg mb-4">
         <div className="flex items-center justify-between mb-2">
+
+
           <h5 className="font-semibold text-gray-800 flex items-center">
             🌤️ Condições do Dia
           </h5>
@@ -179,21 +222,28 @@ export default function OpenMeteoCard({ data, className }: Props) {
         </p>
 
         {/* Informações de UV */}
-        <div className="rounded-lg mb-3">
-          <div className="flex items-center mb-2">
-            <h6 className="font-semibold text-gray-800 mr-2">☀️ Índice UV:</h6>
-            <span className={`font-bold ${uvInfo.cor}`}>
-              {avgUV.toFixed(1)} - {uvInfo.nivel}
-            </span>
-          </div>
-          <p className="text-xs text-gray-600">
-            {uvInfo.recomendacao}
-          </p>
+        <div className="flex items-center mb-2">
+          <h6 className="font-semibold text-gray-800 mr-2">☀️ Índice UV:</h6>
+          <span className={`font-bold ${uvInfo.cor}`}>
+            {avgUV.toFixed(1)} - {uvInfo.nivel}
+          </span>
         </div>
+        <p className="text-xs text-gray-600 mb-3">
+          {uvInfo.recomendacao}
+        </p>
 
-        <div className="flex justify-between text-xs text-gray-600">
-          <span>🌡️ Variação: {Math.min(...data.map(d => parseFloat(String(d.temperatura))))}° - {Math.max(...data.map(d => parseFloat(String(d.temperatura))))}°</span>
+        {/* Informações do vento */}
+        <div className="flex items-center mb-2">
+          <h6 className="font-semibold text-gray-800 mr-2">{windInfo.icone} Vento:</h6>
+          <span className={`font-bold ${windInfo.cor}`}>
+            {avgWind} km/h - {windInfo.nivel}
+          </span>
         </div>
+        <p className="text-xs text-gray-600 break-words">
+          {windInfo.efeito}
+        </p>
+        
+
       </div>
 
       {/* Footer */}
