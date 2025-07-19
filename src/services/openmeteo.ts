@@ -109,6 +109,7 @@ export async function getOpenMeteoFridayForecast() {
       : null,
     indiceUV: item.indiceUV !== undefined ? item.indiceUV : null,
   }));
+  console.log('OpenMeteoData -> ',openMeteoData)
 
   return { openMeteoData };
 }
