@@ -75,11 +75,10 @@ export default async function Home() {
         </header>
 
         {/* Subtítulo com data da sexta-feira (se disponível) */}
-        <h2 className="text-xl text-gray-600 mb-8 text-center">
-          Previsão do tempo para o vôlei de farmácia
+        <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
+          Previsão do tempo para o vôlei de farmácia <span></span>
           {data.openMeteoData[0].dataHora && (
             <>
-              <br />
               {data.openMeteoData[0].dataHora.split(",")[0]}
             </>
           )}

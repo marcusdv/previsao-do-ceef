@@ -112,7 +112,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
       </div>
 
       {/* Resumo Geral */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {/* Temperatura Média */}
         <div className="text-center p-3 bg-teal-50 rounded-lg">
           <h4 className="text-xs md:text-sm font-medium text-gray-600 mb-1">Temp. Média</h4>
@@ -133,7 +133,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
         {/* UV Médio */}
         <div className="text-center p-3 bg-amber-50 rounded-lg">
-          <h4 className="text-xs md:text-sm font-medium text-gray-600 mb-1">UV médio entre (13h-16h)</h4>
+          <h4 className="text-xs md:text-sm font-medium text-gray-600 mb-1">UV médio</h4>
           <p className="text-lg md:text-2xl font-bold text-amber-600">{avgUV.toFixed(1)}</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
       {/* Previsão por Horário */}
       <div className="mb-6">
         <h5 className="font-semibold text-gray-800 mb-3">📅 Previsão Horária (12h às 19h)</h5>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {data.map((item, index) => (
             <div key={index} className="bg-gray-50 p-3 rounded-lg text-center hover:bg-gray-100 transition-colors">
               <div className="text-xs font-medium text-gray-600 mb-1">
