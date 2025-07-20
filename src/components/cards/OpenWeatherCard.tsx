@@ -34,6 +34,14 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
     };
 
 
+    if (data.length < 6) {
+        return (
+            <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
+                <h3 className="text-xl font-bold text-gray-800">OpenWeather</h3>
+                <p>Dados insuficientes para exibir</p>
+            </div>
+        );
+    }
 
     return (
         <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ${className}`}>
@@ -88,7 +96,7 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
             {/* fonte dos dados */}
             <div className="text-right mt-4 flex justify-between">
                 <p className="text-sm text-gray-600 hidden md:block ">
-                    Previsão com as coordenadas específicas do CEEF
+                    Previsão com as coordenadas do CEEF
                 </p>
                 <p className="text-sm text-gray-600">Fonte: {data[0]?.fonte}</p>
             </div>
