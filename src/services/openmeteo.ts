@@ -91,7 +91,13 @@ export async function getOpenMeteoFridayForecast() {
     })
     .filter((item: ForecastItem) => item.datetime.getDay() === 5)
     .filter((item: ForecastItem) => {
-      const hour = item.datetime.getHours();
+      // Converte para string e extrai a hora diretamente
+      const timeString = item.datetime.toLocaleString("pt-BR", {
+        timeZone: "America/Bahia",
+        hour: '2-digit',
+        hour12: false
+      });
+      const hour = parseInt(timeString);
       return hour >= 12 && hour <= 19;
     });
 
