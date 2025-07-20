@@ -1,3 +1,4 @@
+'use client';
 import { OpenMeteoDataType } from "@/services/openmeteo";
 
 interface Props {
@@ -140,9 +141,20 @@ export default function OpenMeteoCard({ data, className }: Props) {
   const uvInfo = getUVInfo(avgUV);
   const windInfo = getWindInfo(avgWind);
 
+  // Accordion para exibir os dados
+  const handleAccordeonClick = () => {
+    // Lógica para expandir ou recolher o acordeão
+    const accordeonElement = document.querySelector('.accordeon');
+    if (accordeonElement instanceof HTMLElement) {
+      accordeonElement.style.gridTemplateRows =
+        accordeonElement.style.gridTemplateRows === '1fr' ? '0fr' : '1fr';
+    }
+
+  }
 
 
   return (
+    // acordeon
     <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300 ${className}`}>
       {/* Header do Card */}
       <div className="flex items-center justify-between mb-4">
@@ -242,7 +254,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
         <p className="text-xs text-gray-600 break-words">
           {windInfo.efeito}
         </p>
-        
+
 
       </div>
 
@@ -256,5 +268,6 @@ export default function OpenMeteoCard({ data, className }: Props) {
         </p>
       </div>
     </div>
+
   );
 }

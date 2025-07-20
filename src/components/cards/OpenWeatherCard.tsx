@@ -1,4 +1,6 @@
+'use client';
 import { OpenWeatherDataType } from "@/types/openWeatherType"
+import { useState } from "react";
 
 /**
  * Componente que exibe um cartão de informações meteorológicas.
@@ -7,6 +9,8 @@ import { OpenWeatherDataType } from "@/types/openWeatherType"
  * @returns Um elemento JSX que renderiza os dados meteorológicos em cards bonitos.
  */
 export default function OpenWeatherCard({ data, className }: { data: OpenWeatherDataType[] | null, className?: string }) {
+     const [isExpanded, setIsExpanded] = useState(false);
+
     if (!data || data.length === 0) {
         return (
             <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
@@ -16,6 +20,7 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
         );
     }
 
+   
     const getWeatherIcon = (description: string) => {
         const desc = description.toLowerCase();
         if (desc.includes('chuva')) return '🌧️';
@@ -33,74 +38,107 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
         return timePart ? timePart.substring(0, 5) : '00:00'; // Pega apenas HH:MM
     };
 
+    // Accordion para exibir os dados
+    const handleAccordeonClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        // Lógica para expandir ou recolher o acordeão
+        const accordeonElement = event.currentTarget;
+        setIsExpanded(!isExpanded);
+        if (isExpanded) {
+            accordeonElement.style.gridTemplateRows = '1fr';
+        } else {
+            accordeonElement.style.gridTemplateRows = '0fr';
+        }
+    }
 
     if (data.length < 6) {
         return (
-            <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
-                <h3 className="text-xl font-bold text-gray-800">OpenWeather</h3>
-                <p>Dados insuficientes para exibir</p>
+            // acordeon
+            <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick}>
+                <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 `}>
+                    <div className="flex justify-between">
+
+                        <h3 className="text-xl font-bold text-gray-800">OpenWeather </h3>
+                        <span className={`text-2xl transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
+                            ⬇️
+                        </span>
+                    </div>
+                    <p className="mt-10">Dados insuficientes para exibir</p>
+                </div>
             </div>
         );
     }
 
+
+
     return (
-        <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full ${className}`}>
-            <h2 className="text-xl font-bold mb-4 text-gray-800">OppenWeather</h2>
-            {/* Grid de horários */}
-            <div className={`grid grid-cols-3 gap-2 md:grid-cols-${data.length} `}>
-                {data.map((inf, index) => (
-                    <div
-                        key={index}
-                        className="flex flex-col justify-around bg-white/70 rounded-lg p-4 text-center hover:bg-white/90 transition-all duration-200 border border-white/50 overflow-hidden"
-                    >
-                        {/* Horário */}
-                        <div className="mb-3">
-                            <h3 className="text-lg font-semibold text-gray-700">
-                                {formatTime(inf.dataHora)}
-                            </h3>
-                        </div>
+        // acordeon
+        <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick}>
+            <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full}`}>
+                <div>
 
-                        {/* Ícone e temperatura */}
-                        <div className="mb-4">
-                            <div className="text-3xl mb-2">
-                                {getWeatherIcon(inf.descricao)}
+                    <h2 className="text-xl font-bold mb-4 text-gray-800">OppenWeather</h2>
+                    <span className={`text-2xl transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
+                            ⬇️
+                        </span>
+
+                </div>
+                {/* Grid de horários */}
+                <div className={`grid grid-cols-3 gap-2 md:grid-cols-${data.length} `}>
+                    {data.map((inf, index) => (
+                        <div
+                            key={index}
+                            className="flex flex-col justify-around bg-white/70 rounded-lg p-4 text-center hover:bg-white/90 transition-all duration-200 border border-white/50 overflow-hidden"
+                        >
+                            {/* Horário */}
+                            <div className="mb-3">
+                                <h3 className="text-lg font-semibold text-gray-700">
+                                    {formatTime(inf.dataHora)}
+                                </h3>
                             </div>
-                            <div className="text-xl font-bold text-gray-800">
-                                {inf.temperatura}°C
+
+                            {/* Ícone e temperatura */}
+                            <div className="mb-4">
+                                <div className="text-3xl mb-2">
+                                    {getWeatherIcon(inf.descricao)}
+                                </div>
+                                <div className="text-xl font-bold text-gray-800">
+                                    {inf.temperatura}°C
+                                </div>
+                            </div>
+
+                            {/* Descrição */}
+                            <p className="text-xs text-gray-600 capitalize mb-3 leading-tight">
+                                {inf.descricao}
+                            </p>
+
+                            {/* Detalhes */}
+                            <div className="space-y-1">
+                                {inf.probabilidadeChuva !== null && (
+                                    <div className="text-xs ">
+                                        <span className="text-blue-600 whitespace-nowrap">💧 {inf.probabilidadeChuva}%</span>
+                                    </div>
+                                )}
+
+                                {inf.velocidadeVento !== null && (
+                                    <div className="text-xs">
+                                        <span className="text-green-600 whitespace-nowrap ">💨 {inf.velocidadeVento} km/h</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
+                    ))}
+                </div>
 
-                        {/* Descrição */}
-                        <p className="text-xs text-gray-600 capitalize mb-3 leading-tight">
-                            {inf.descricao}
-                        </p>
+                {/* fonte dos dados */}
+                <div className="text-right mt-4 flex justify-between">
+                    <p className="text-sm text-gray-600 hidden md:block ">
+                        Previsão com as coordenadas do CEEF
+                    </p>
+                    <p className="text-sm text-gray-600">Fonte: {data[0]?.fonte}</p>
+                </div>
 
-                        {/* Detalhes */}
-                        <div className="space-y-1">
-                            {inf.probabilidadeChuva !== null && (
-                                <div className="text-xs ">
-                                    <span className="text-blue-600 whitespace-nowrap">💧 {inf.probabilidadeChuva}%</span>
-                                </div>
-                            )}
-
-                            {inf.velocidadeVento !== null && (
-                                <div className="text-xs">
-                                    <span className="text-green-600 whitespace-nowrap ">💨 {inf.velocidadeVento} km/h</span>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                ))}
             </div>
-
-            {/* fonte dos dados */}
-            <div className="text-right mt-4 flex justify-between">
-                <p className="text-sm text-gray-600 hidden md:block ">
-                    Previsão com as coordenadas do CEEF
-                </p>
-                <p className="text-sm text-gray-600">Fonte: {data[0]?.fonte}</p>
-            </div>
-
         </div>
+
     )
 }

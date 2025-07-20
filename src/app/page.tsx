@@ -88,15 +88,10 @@ export default async function Home() {
         <div className="grid grid-cols-1 xxl:grid-cols-2 gap-4 w-full max-w-11/12">
 
           {/* Renderização condicional: só mostra card se tiver dados */}
-          {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2"} />}
+          {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2 "} />}
           {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />}
           {data.accuweatherData && <AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
         </div>
-      </div>
-
-      {/* Área de rodapé (atualmente vazia) */}
-      <div className="p-4 text-center">
-
       </div>
     </div>
   );
