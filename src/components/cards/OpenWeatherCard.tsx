@@ -9,22 +9,31 @@ import { useState } from "react";
  * @returns Um elemento JSX que renderiza os dados meteorológicos em cards bonitos.
  */
 export default function OpenWeatherCard({ data, className }: { data: OpenWeatherDataType[] | null, className?: string }) {
-     const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    if (!data || data.length === 0) {
+
+    if (!data || data.length === 0 || data.length < 6) {
         return (
-            <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
+            <div className={`bg-white rounded-lg  shadow-lg p-6 border border-gray-200 min-w-full ${className}`}>
                 <h3 className="text-xl font-bold text-gray-800">OpenWeather</h3>
                 <p>Dados não disponíveis</p>
             </div>
         );
     }
 
-   
-    const getWeatherIcon = (description: string) => {
+
+    const getWeatherIcon = (description: string, probabilidadeChuva: number | null) => {
         const desc = description.toLowerCase();
+
+        if (probabilidadeChuva !== null && probabilidadeChuva < 51) {
+            if (desc.includes('chuva')) return '☁️';
+            if (desc.includes('chuvisco')) return '🌥️';
+            if (desc.includes('nuvem') || desc.includes('nublado')) return '⛅';
+            return '🌤️';
+        }
+
         if (desc.includes('chuva')) return '🌧️';
-        if (desc.includes('chuvisco')) return '🌦️';
+        if (desc.includes('chuvisco')) return '☁️';
         if (desc.includes('nuvem') || desc.includes('nublado')) return '⛅';
         if (desc.includes('sol') || desc.includes('limpo')) return '☀️';
         if (desc.includes('neve')) return '❄️';
@@ -42,44 +51,27 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
     const handleAccordeonClick = (event: React.MouseEvent<HTMLDivElement>) => {
         // Lógica para expandir ou recolher o acordeão
         const accordeonElement = event.currentTarget;
-        setIsExpanded(!isExpanded);
-        if (isExpanded) {
-            accordeonElement.style.gridTemplateRows = '1fr';
-        } else {
-            accordeonElement.style.gridTemplateRows = '0fr';
-        }
+        setIsExpanded((prev) => {
+            const next = !prev;
+            accordeonElement.style.gridTemplateRows = next ? '1fr' : '0fr';
+            return next;
+        });
     }
 
-    if (data.length < 6) {
-        return (
-            // acordeon
-            <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick}>
-                <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 `}>
-                    <div className="flex justify-between">
-
-                        <h3 className="text-xl font-bold text-gray-800">OpenWeather </h3>
-                        <span className={`text-2xl transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                            ⬇️
-                        </span>
-                    </div>
-                    <p className="mt-10">Dados insuficientes para exibir</p>
-                </div>
-            </div>
-        );
-    }
-
-
-
+    // Renderiza o componente
     return (
         // acordeon
-        <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick}>
-            <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full}`}>
-                <div>
+        <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick} >
+            <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full`}
+            >
+                <div className="flex items-center justify-between cursor-pointer mb-4">
 
-                    <h2 className="text-xl font-bold mb-4 text-gray-800">OppenWeather</h2>
-                    <span className={`text-2xl transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                            ⬇️
-                        </span>
+                    <h2 className="flex text-xl font-bold  text-gray-800">OppenWeather</h2>
+                    <span
+                        className={`text-2xl transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
+                    >
+                        ⬆️
+                    </span>
 
                 </div>
                 {/* Grid de horários */}
@@ -99,7 +91,7 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
                             {/* Ícone e temperatura */}
                             <div className="mb-4">
                                 <div className="text-3xl mb-2">
-                                    {getWeatherIcon(inf.descricao)}
+                                    {getWeatherIcon(inf.descricao, inf.probabilidadeChuva ?? 0)}
                                 </div>
                                 <div className="text-xl font-bold text-gray-800">
                                     {inf.temperatura}°C
