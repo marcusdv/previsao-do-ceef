@@ -16,7 +16,7 @@ const MapaPrevisao = dynamic(
 export default function MapaWrapper() {
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const [linhas, setLinhas] = useState<'1fr' | '0fr'>('1fr');
+    const [linhas, setLinhas] = useState<'1fr' | '0fr'>('0fr');
     const accordeonRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function MapaWrapper() {
             className={`accordeon`}
             ref={accordeonRef}
         >
-            <div className={`bg-gradient-to-br min-h-fit cursor-pointer from-gray-50 to-slate-100 rounded-xl shadow-lg p-6 border border-slate-200 lg:max-w-fit min-w-full`}
+            <div className={`bg-gradient-to-br  cursor-pointer from-gray-50 to-slate-100 rounded-xl shadow-lg p-6 border border-slate-200 lg:max-w-fit min-w-full`}
 
             >
                 <div
@@ -51,15 +51,15 @@ export default function MapaWrapper() {
                     onClick={handleAccordeonClick}
 
                 >
-                    <h2 className="flex text-xl font-bold text-gray-800">Local da previsão meteorológica</h2>
+                    <h2 className="flex text-xl font-bold text-gray-800">Local da previsão</h2>
                     <span
                         className={`text-2xl select-none text-slate-800 transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
                     >
                         ▲
                     </span>
                 </div>
-                <div className="overflow-hidden md:pb-0">
-                    {/* <MapaPrevisao /> */}
+                <div className="overflow-hidden">
+                    <MapaPrevisao />
                 </div>
             </div>
         </div>
