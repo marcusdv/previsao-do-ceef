@@ -16,7 +16,7 @@ const MapaPrevisao = dynamic(
 export default function MapaWrapper() {
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const [linhas, setLinhas] = useState<'1fr' | '0fr'>('0fr');
+    const [linhas, setLinhas] = useState<'1fr' | '0fr'>('1fr');
     const accordeonRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
