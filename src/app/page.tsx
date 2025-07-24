@@ -97,7 +97,7 @@ export default async function Home() {
           {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />}
           {data.accuweatherData && <AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
           {/* Componente do mapa com importação dinâmica */}
-          <div className="w-full mb-8 px-4 col-span-2">
+          <div className="col-span-2">
             <MapaWrapper />
           </div>
         </div>
