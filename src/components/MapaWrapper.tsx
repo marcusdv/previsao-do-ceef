@@ -43,7 +43,7 @@ export default function MapaWrapper() {
             className={`accordeon`}
             ref={accordeonRef}
         >
-            <div className={`bg-gradient-to-br cursor-pointer from-gray-50 to-slate-100 rounded-xl shadow-lg p-6 border border-slate-200 lg:max-w-fit min-w-full`}
+            <div className={`bg-gradient-to-br min-h-fit cursor-pointer from-gray-50 to-slate-100 rounded-xl shadow-lg p-6 border border-slate-200 lg:max-w-fit min-w-full`}
 
             >
                 <div
@@ -58,7 +58,7 @@ export default function MapaWrapper() {
                         ▲
                     </span>
                 </div>
-                <div className="overflow-hidden">
+                <div className="overflow-hidden p-4 md:p-0">
                     <MapaPrevisao />
                 </div>
             </div>
