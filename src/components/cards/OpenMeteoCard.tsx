@@ -67,19 +67,24 @@ export default function OpenMeteoCard({ data, className }: Props) {
   // Calcular probabilidade máxima de chuva
   const maxRain = Math.max(...data.map(item => item.probabilidadeChuva || 0));
 
-  // Calcular velocidade média do vento
-  const avgWind = Math.round(
-    data.reduce((sum, item) => sum + parseFloat(String(item.velocidadeVento || "0")), 0) / data.length
-  );
-
-  // Calcular índice UV médio entre 13h e 16h
-  const uvData13to16 = data.filter(item => {
+  // Calcular velocidade média do vento entre 14h e 17h
+  const windData14to17 = data.filter(item => {
     const hour = parseInt(formatTime(item.dataHora).split(':')[0]);
-    return hour >= 13 && hour <= 16;
+    return hour >= 14 && hour <= 17;
   });
 
-  const avgUV = uvData13to16.length > 0
-    ? uvData13to16.reduce((sum, item) => sum + (item.indiceUV || 0), 0) / uvData13to16.length
+  const avgWind = windData14to17.length > 0
+    ? Math.round(windData14to17.reduce((sum, item) => sum + parseFloat(String(item.velocidadeVento || "0")), 0) / windData14to17.length)
+    : Math.round(data.reduce((sum, item) => sum + parseFloat(String(item.velocidadeVento || "0")), 0) / data.length);
+
+  // Calcular índice UV médio entre 13h e 15h
+  const uvData13to15 = data.filter(item => {
+    const hour = parseInt(formatTime(item.dataHora).split(':')[0]);
+    return hour >= 13 && hour <= 15;
+  });
+
+  const avgUV = uvData13to15.length > 0
+    ? uvData13to15.reduce((sum, item) => sum + (item.indiceUV || 0), 0) / uvData13to15.length
     : 0;
 
   // Função para classificar UV e dar recomendações
