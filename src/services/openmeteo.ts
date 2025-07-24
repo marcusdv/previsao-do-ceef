@@ -26,16 +26,11 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
     return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
   }
 
-  // Fim de semana (sábado e domingo): Cache de 72h
-  // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
-  // - Cache mais longo para evitar requisições desnecessárias
-  // - Economiza chamadas da API que não trariam dados úteis
-  return { shouldRequest: true, cacheTime: 259200 }; // 72 horas (3 dias)
+  // Sábado e domingo (6-0): Cache de 24h
+  return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
 }
 
 export async function getOpenMeteoFridayForecast() {
-    
-
   const { cacheTime } = shouldMakeApiRequest();
 
   const lat = -13.008085569770852;
@@ -94,8 +89,8 @@ export async function getOpenMeteoFridayForecast() {
       // Converte para string e extrai a hora diretamente
       const timeString = item.datetime.toLocaleString("pt-BR", {
         timeZone: "America/Bahia",
-        hour: '2-digit',
-        hour12: false
+        hour: "2-digit",
+        hour12: false,
       });
       const hour = parseInt(timeString);
       return hour >= 12 && hour <= 19;
@@ -115,7 +110,7 @@ export async function getOpenMeteoFridayForecast() {
       : null,
     indiceUV: item.indiceUV !== undefined ? item.indiceUV : null,
   }));
-  console.log('OpenMeteoData -> ',openMeteoData)
+  console.log("OpenMeteoData -> ", openMeteoData);
 
   return { openMeteoData };
 }

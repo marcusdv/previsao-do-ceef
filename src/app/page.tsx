@@ -2,6 +2,7 @@
 import OpenWeatherCard from "../components/cards/OpenWeatherCard";
 import AccuWeatherCard from "../components/cards/AccuWeatherCard";
 import OpenMeteoCard from "../components/cards/OpenMeteoCard";
+import MapaWrapper from "@/components/MapaWrapper";
 import Image from "next/image";
 
 // Serviços para buscar dados das APIs meteorológicas
@@ -77,12 +78,14 @@ export default async function Home() {
         {/* Subtítulo com data da sexta-feira (se disponível) */}
         <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
           Previsão do tempo para o vôlei de farmácia <span></span>
-          {data.openMeteoData[0].dataHora && (
+          {data.openMeteoData && data.openMeteoData[0]?.dataHora && (
             <>
               {data.openMeteoData[0].dataHora.split(",")[0]}
             </>
           )}
         </h2>
+
+
 
         {/* col-span-2 em xxl para layout lado a lado em telas muito grandes */}
         <div className="grid grid-cols-1 xxl:grid-cols-2 gap-4 w-full max-w-11/12">
@@ -91,6 +94,10 @@ export default async function Home() {
           {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2 "} />}
           {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />}
           {data.accuweatherData && <AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
+          {/* Componente do mapa com importação dinâmica */}
+          <div className="w-full mb-8 px-4 col-span-2">
+            <MapaWrapper />
+          </div>
         </div>
       </div>
     </div>
