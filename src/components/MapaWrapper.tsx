@@ -58,8 +58,8 @@ export default function MapaWrapper() {
                         ▲
                     </span>
                 </div>
-                <div className="overflow-hidden p-4 md:p-0">
-                    <MapaPrevisao />
+                <div className="overflow-hidden md:pb-0">
+                    {/* <MapaPrevisao /> */}
                 </div>
             </div>
         </div>
