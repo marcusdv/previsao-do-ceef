@@ -26,19 +26,19 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
         const desc = description.toLowerCase();
 
         if (probabilidadeChuva !== null && probabilidadeChuva < 51) {
-            if (desc.includes('chuva')) return '☁️';
-            if (desc.includes('chuvisco')) return '🌥️';
-            if (desc.includes('nuvem') || desc.includes('nublado')) return '⛅';
-            return '🌤️';
+            if (desc.includes('chuva')) return <i className="wi wi-day-showers text-3xl text-blue-500"></i>;
+            if (desc.includes('chuvisco')) return <i className="wi wi-day-sprinkle text-3xl text-blue-400"></i>;
+            if (desc.includes('nuvem') || desc.includes('nublado')) return <i className="wi wi-day-cloudy text-3xl text-blue-400"></i>;
+            return <i className="wi wi-day-sunny-overcast text-3xl text-yellow-500"></i>;
         }
 
-        if (desc.includes('chuva')) return '🌧️';
-        if (desc.includes('chuvisco')) return '☁️';
-        if (desc.includes('nuvem') || desc.includes('nublado')) return '⛅';
-        if (desc.includes('sol') || desc.includes('limpo')) return '☀️';
-        if (desc.includes('neve')) return '❄️';
-        if (desc.includes('tempestade')) return '⛈️';
-        return '🌤️';
+        if (desc.includes('chuva')) return <i className="wi wi-day-rain text-3xl text-blue-600"></i>;
+        if (desc.includes('chuvisco')) return <i className="wi wi-day-sprinkle text-3xl text-blue-500"></i>;
+        if (desc.includes('nuvem') || desc.includes('nublado')) return <i className="wi wi-day-cloudy text-3xl text-blue-500"></i>;
+        if (desc.includes('sol') || desc.includes('limpo')) return <i className="wi wi-day-sunny text-3xl text-yellow-600"></i>;
+        if (desc.includes('neve')) return <i className="wi wi-day-snow text-3xl text-blue-300"></i>;
+        if (desc.includes('tempestade')) return <i className="wi wi-day-thunderstorm text-3xl text-purple-600"></i>;
+        return <i className="wi wi-day-sunny-overcast text-3xl text-yellow-500"></i>;
     };
 
     const formatTime = (dateTime: string) => {
@@ -64,13 +64,13 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
         <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick} >
             <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full`}
             >
-                <div className="flex items-center justify-between cursor-pointer mb-4">
+                <div className="flex select-none items-center justify-between cursor-pointer mb-4">
 
-                    <h2 className="flex text-xl font-bold  text-gray-800">OppenWeather</h2>
+                    <h2 className="flex text-xl font-bold  text-gray-800">OpenWeather</h2>
                     <span
-                        className={`text-2xl transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
+                        className={`text-2xl select-none text-blue-800 transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
                     >
-                        ⬆️
+                        ▲
                     </span>
 
                 </div>
@@ -107,13 +107,19 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
                             <div className="space-y-1">
                                 {inf.probabilidadeChuva !== null && (
                                     <div className="text-xs ">
-                                        <span className="text-blue-600 whitespace-nowrap">💧 {inf.probabilidadeChuva}%</span>
+                                        <span className="text-blue-600 whitespace-nowrap">
+                                            <i className="wi wi-rain mr-1"></i>
+                                            {inf.probabilidadeChuva}%
+                                        </span>
                                     </div>
                                 )}
 
                                 {inf.velocidadeVento !== null && (
                                     <div className="text-xs">
-                                        <span className="text-green-600 whitespace-nowrap ">💨 {inf.velocidadeVento} km/h</span>
+                                        <span className="text-green-600 whitespace-nowrap ">
+                                            <i className="wi wi-strong-wind mr-1"></i>
+                                            {inf.velocidadeVento} km/h
+                                        </span>
                                     </div>
                                 )}
                             </div>

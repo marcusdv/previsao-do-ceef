@@ -89,12 +89,12 @@ export default function AccuWeatherCard({ data, className }: Props) {
             <div className={`bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 ${className}`}>
 
                 {/* Header do Card */}
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex cursor-pointer select-none items-center justify-between mb-4">
                     <h3 className="text-xl font-bold text-gray-800">AccuWeather</h3>
                     <span
-                        className={`text-2xl transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
+                        className={`cursor-pointer text-2xl select-none text-green-800 transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
                     >
-                        ⬆️
+                        ▲
                     </span>
                 </div>
 
@@ -129,7 +129,8 @@ export default function AccuWeatherCard({ data, className }: Props) {
                     <div className="bg-orange-50 p-4 rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                             <h5 className="font-semibold text-gray-800 flex items-center">
-                                ☀️ Dia
+                                <i className="wi wi-day-sunny text-orange-600 mr-1"></i>
+                                Dia
                             </h5>
                             <span className="text-sm text-gray-600">
                                 {day.precipitationProbability}% chuva
@@ -137,8 +138,14 @@ export default function AccuWeatherCard({ data, className }: Props) {
                         </div>
                         <p className="text-sm text-gray-700 mb-2">{day.longPhrase}</p>
                         <div className="flex justify-between text-xs text-gray-600">
-                            <span>💨 {day.wind.speed} Km/h {translateCardinalDirection(day.wind.direction)}</span>
-                            <span>⛈️ {day.thunderstormProbability}% trovoada</span>
+                            <span>
+                                <i className="wi wi-strong-wind mr-1"></i>
+                                {day.wind.speed} Km/h {translateCardinalDirection(day.wind.direction)}
+                            </span>
+                            <span>
+                                <i className="wi wi-thunderstorm mr-1"></i>
+                                {day.thunderstormProbability}% trovoada
+                            </span>
                         </div>
                     </div>
 
@@ -146,7 +153,8 @@ export default function AccuWeatherCard({ data, className }: Props) {
                     <div className="bg-indigo-50 p-4 rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                             <h5 className="font-semibold text-gray-800 flex items-center">
-                                🌙 Noite
+                                <i className="wi wi-night-clear text-indigo-600 mr-1"></i>
+                                Noite
                             </h5>
                             <span className="text-sm text-gray-600">
                                 {night.precipitationProbability}% chuva
@@ -154,8 +162,14 @@ export default function AccuWeatherCard({ data, className }: Props) {
                         </div>
                         <p className="text-sm text-gray-700 mb-2">{night.longPhrase}</p>
                         <div className="flex justify-between text-xs text-gray-600">
-                            <span>💨 {night.wind.speed} Km/h {translateCardinalDirection(night.wind.direction)}</span>
-                            <span>⛈️ {night.thunderstormProbability}% trovoada</span>
+                            <span>
+                                <i className="wi wi-strong-wind mr-1"></i>
+                                {night.wind.speed} Km/h {translateCardinalDirection(night.wind.direction)}
+                            </span>
+                            <span>
+                                <i className="wi wi-thunderstorm mr-1"></i>
+                                {night.thunderstormProbability}% trovoada
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -165,18 +179,45 @@ export default function AccuWeatherCard({ data, className }: Props) {
                     {/* Sol */}
                     {sun && (
                         <div className="text-center p-2 bg-yellow-100 rounded">
-                            <p className="font-medium text-yellow-800 mb-1">☀️ Sol</p>
-                            <p>🌅 Nasce {formatTime(sun.Rise)}</p>
-                            <p>🌇 Se põe {formatTime(sun.Set)}</p>
+                            <p className="font-medium text-yellow-800 mb-1 flex items-center justify-center">
+                                <i className="wi wi-day-sunny text-yellow-600 mr-1"></i>
+                                Sol
+                            </p>
+                            <p>
+                                <i className="wi wi-sunrise mr-1"></i>
+                                Nasce {formatTime(sun.Rise)}
+                            </p>
+                            <p>
+                                <i className="wi wi-sunset mr-1"></i>
+                                Se põe {formatTime(sun.Set)}
+                            </p>
                         </div>
                     )}
 
                     {/* Lua */}
                     {moon && (
                         <div className="text-center p-2 bg-slate-100 rounded">
-                            <p className="font-medium text-slate-800 mb-1">🌙 Lua</p>
-                            <p>{moon.Rise ? `🌔 ${formatTime(moon.Rise)}` : "🌔 Não nasce ao dia"}</p>
-                            <p>🌘 Se põe {formatTime(moon.Set)}</p>
+                            <p className="font-medium text-slate-800 mb-1 flex items-center justify-center">
+                                <i className="wi wi-night-clear text-slate-600 mr-1"></i>
+                                Lua
+                            </p>
+                            <p>
+                                {moon.Rise ? (
+                                    <>
+                                        <i className="wi wi-moonrise mr-1"></i>
+                                        {formatTime(moon.Rise)}
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="wi wi-moonrise mr-1"></i>
+                                        Não nasce ao dia
+                                    </>
+                                )}
+                            </p>
+                            <p>
+                                <i className="wi wi-moonset mr-1"></i>
+                                Se põe {formatTime(moon.Set)}
+                            </p>
                             <p className="text-xs">{translateMoonPhase(moon.Phase)} ({moon.Age} dias)</p>
                         </div>
                     )}

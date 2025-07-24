@@ -58,7 +58,7 @@ export default async function Home() {
 
   return (
     // Container principal com altura mínima da tela
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pb-10">
       <div className="flex-1 flex flex-col items-center justify-center">
 
         {/* Header com favicon e título */}
