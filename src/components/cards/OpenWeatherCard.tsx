@@ -62,7 +62,7 @@ export default function OpenWeatherCard({ data, className }: { data: OpenWeather
     return (
         // acordeon
         <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick} >
-            <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit mx-auto min-w-full`}
+            <div className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 border border-blue-200 lg:max-w-fit min-w-full`}
             >
                 <div className="flex select-none items-center justify-between cursor-pointer mb-4">
 
