@@ -205,9 +205,9 @@ export default function OpenMeteoCard({ data, className }: Props) {
         </div>
 
         {/* UV Médio */}
-        <div className="text-center p-3 bg-red-100 rounded-lg">
-          <h4 className="text-xs md:text-sm font-medium text-gray-500 mb-1">UV médio</h4>
-          <p className="text-lg md:text-2xl font-bold text-red-500">{avgUV.toFixed(1)}</p>
+        <div className="text-center p-3 bg-emerald-100 rounded-lg">
+          <h4 className="text-xs md:text-sm font-medium text-emerald-500 mb-1">UV médio</h4>
+          <p className="text-lg md:text-2xl font-bold text-emerald-500">{avgUV.toFixed(1)}</p>
         </div>
       </div>
 
@@ -241,8 +241,8 @@ export default function OpenMeteoCard({ data, className }: Props) {
                 <i className="wi wi-strong-wind text-slate-500"></i> {item.velocidadeVento} km/h
                 </div>
                 {/* 🔆 Índice UV */}
-                <div className="text-xs text-red-500">
-                <i className="wi wi-hot text-red-500"></i> {item.indiceUV !== null ? item.indiceUV.toFixed(1) : "N/A"}
+                <div className="text-xs text-emerald-500">
+                <i className="wi wi-hot text-emerald-500"></i> {item.indiceUV !== null ? item.indiceUV.toFixed(1) : "N/A"}
                 </div>
             </div>
           ))}
@@ -265,7 +265,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
         {/* Informações de UV */}
         <div className="flex items-center mb-2">
           <h6 className="font-semibold text-gray-800 mr-2 flex items-center">
-            <i className="wi wi-hot text-red-500 mr-1"></i> Índice UV:
+            <i className="wi wi-hot text-emerald-500 mr-1"></i> Índice UV:
           </h6>
           <span className={`font-bold ${uvInfo.cor}`}>
             {avgUV.toFixed(1)} - {uvInfo.nivel}
@@ -278,7 +278,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
         {/* Informações do vento */}
         <div className="flex items-center mb-2">
           <h6 className="font-semibold text-gray-800 mr-2 flex items-center">
-            <i className={`wi wi-strong-wind text-pink-500 mr-1`}></i> Vento:
+            <i className={`wi wi-strong-wind text-slate-500 mr-1`}></i> Vento:
           </h6>
           <span className={`font-bold ${windInfo.cor}`}>
             {avgWind} km/h - {windInfo.nivel}
