@@ -5,7 +5,7 @@ import "leaflet-defaulticon-compatibility"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
 
 export default function MapaPrevisao() {
-  const position: [number, number] = [-13.00, -38.51]; // Salvador, BA - CEEF
+  const position: [number, number] = [-13.008094171967592, -38.513298896712385]; // Salvador, BA - CEEF
   const zoom = 17;
 
   return (

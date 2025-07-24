@@ -63,27 +63,29 @@ export default async function Home() {
       <div className="flex-1 flex flex-col items-center justify-center">
 
         {/* Header com favicon e título */}
-        <header className="flex items-center mb-2 mt-6 w-8/12 justify-center">
-          <Image
-            src="/favicon.ico"
-            alt="CEEFguru Logo"
-            width={32}
-            height={32}
-            className="mr-3"
-          />
-          {/* Título principal da aplicação */}
-          <h1 className="text-4xl font-bold text-gray-800">CEEFguru</h1>
-        </header>
+        <header className="flex flex-col items-center mb-2 mt-6 w-8/12 justify-center">
+          <div className="flex items-center mb-4">
 
-        {/* Subtítulo com data da sexta-feira (se disponível) */}
-        <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
-          Previsão do tempo para o vôlei de farmácia <span></span>
-          {data.openMeteoData && data.openMeteoData[0]?.dataHora && (
-            <>
-              {data.openMeteoData[0].dataHora.split(",")[0]}
-            </>
-          )}
-        </h2>
+            <Image
+              src="/favicon.ico"
+              alt="CEEFguru Logo"
+              width={32}
+              height={32}
+              className="mr-3"
+            />
+            {/* Título principal da aplicação */}
+            <h1 className="text-4xl font-bold text-gray-800">CEEFguru</h1>
+          </div>
+          <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
+            Previsão do tempo exclusiva para o vôlei de farmácia no <span className="font-semibold">CEEF/UFBA</span> <br />
+            <span className="text-sm font-normal">(apenas para sextas-feiras)</span>
+            {data.openMeteoData && data.openMeteoData[0]?.dataHora && (
+              <>
+                {" — "}{data.openMeteoData[0].dataHora.split(",")[0]}
+              </>
+            )}
+          </h2>
+        </header>
 
 
 
