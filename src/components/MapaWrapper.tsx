@@ -55,7 +55,7 @@ export default function MapaWrapper() {
                     <span
                         className={`text-2xl select-none text-slate-800 transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
                     >
-                        ▲
+                        ▼
                     </span>
                 </div>
                 <div className="overflow-hidden">

@@ -74,7 +74,7 @@ export default async function Home() {
               className="mr-3"
             />
             {/* Título principal da aplicação */}
-            <h1 className="text-4xl font-bold text-gray-800">CEEFguru</h1>
+            <h1 className="text-4xl font-bold text-gray-800">CEEFGuru</h1>
           </div>
           <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
             Previsão do tempo exclusiva para o vôlei de farmácia no <span className="font-semibold">CEEF/UFBA</span> <br />
