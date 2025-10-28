@@ -50,9 +50,9 @@ export async function getAccuweatherFridayForecast() {
 
   // 3. Converte a resposta JSON em um objeto JavaScript
   const data = await response.json();
+  console.log('data openWeather =>', data)
 
   const friday = data.DailyForecasts.find((d: { Date: string }) => {
-    console.log("Data da previsão:", d.Date); // d.Date é uma string como "2025-07-16T07:00:00-03:00"
     const date = new Date(d.Date);
     return date.getDay() === 5; // 5 = sexta-feira
   });
@@ -62,7 +62,6 @@ export async function getAccuweatherFridayForecast() {
     return { accuweatherData: null }; 
   }
 
-  console.log("Dados brutos da sexta-feira:", friday);
 
   const accuweatherData: AccuWeatherDataType = {
     date: friday.Date,

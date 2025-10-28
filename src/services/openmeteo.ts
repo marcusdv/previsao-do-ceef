@@ -96,6 +96,49 @@ export async function getOpenMeteoFridayForecast() {
       return hour >= 12 && hour <= 19;
     });
 
+  // Filtra para sábado e horários entre 9h e 16h
+  const saturdayForecasts = data.hourly.time
+    .map((time: string, index: number): ForecastItem => {
+      const date = new Date(time);
+      return {
+        datetime: date,
+        temperatura: data.hourly.temperature_2m[index],
+        probabilidadeChuva: data.hourly.precipitation_probability[index],
+        weather_code: data.hourly.weather_code[index],
+        velocidadeVento: data.hourly.wind_speed_10m[index],
+        indiceUV: data.hourly.uv_index[index],
+      };
+    })
+    .filter((item: ForecastItem) => item.datetime.getDay() === 6)
+    .filter((item: ForecastItem) => {
+      // Converte para string e extrai a hora diretamente
+      const timeString = item.datetime.toLocaleString("pt-BR", {
+        timeZone: "America/Bahia",
+        hour: "2-digit",
+        hour12: false,
+      });
+      const hour = parseInt(timeString);
+      return hour >= 9 && hour <= 16;
+    });
+
+
+  // ! tentativa para sábado
+  const openMeteoDataSaturday = saturdayForecasts.map((item: ForecastItem) => ({
+    fonte: "Open-Meteo",
+    dataHora: item.datetime.toLocaleString("pt-BR", {
+      timeZone: "America/Bahia",
+    }),
+    temperatura: item.temperatura ? item.temperatura.toFixed(0) : null,
+    descricao:
+      weatherCodeDescriptions[item.weather_code] || "Condição desconhecida",
+    probabilidadeChuva: item.probabilidadeChuva || 0,
+    velocidadeVento: item.velocidadeVento
+      ? item.velocidadeVento.toFixed(0)
+      : null,
+    indiceUV: item.indiceUV !== undefined ? item.indiceUV : null,
+  }));
+
+
   const openMeteoData = fridayForecasts.map((item: ForecastItem) => ({
     fonte: "Open-Meteo",
     dataHora: item.datetime.toLocaleString("pt-BR", {
@@ -112,7 +155,7 @@ export async function getOpenMeteoFridayForecast() {
   }));
   console.log("OpenMeteoData -> ", openMeteoData);
 
-  return { openMeteoData };
+  return { openMeteoData, openMeteoDataSaturday};
 }
 export type OpenMeteoDataType = {
   fonte: "Open-Meteo";
