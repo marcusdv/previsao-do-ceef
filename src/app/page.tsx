@@ -81,7 +81,7 @@ export default async function Home() {
             <span className="text-sm font-normal">(apenas para sextas-feiras)</span>
             {data.openMeteoData && data.openMeteoData[0]?.dataHora && (
               <>
-                {" — "}{data.openMeteoData[0].dataHora.split(",")[0]}
+                {data.openMeteoData[0].dataHora.split(",")[0]}
               </>
             )}
           </h2>
