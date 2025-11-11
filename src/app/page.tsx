@@ -78,7 +78,7 @@ export default async function Home() {
           </div>
           <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
             Previsão do tempo exclusiva para o vôlei de farmácia no <span className="font-semibold">CEEF/UFBA</span> <br />
-            <span className="text-sm font-normal">(apenas para sextas-feiras)</span>
+            <span className="text-sm font-normal">(apenas para sextas-feiras) </span>
             {data.openMeteoData && data.openMeteoData[0]?.dataHora && (
               <>
                 {data.openMeteoData[0].dataHora.split(",")[0]}
