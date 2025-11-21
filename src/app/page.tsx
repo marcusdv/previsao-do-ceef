@@ -15,15 +15,6 @@ import { getOpenMeteoFridayForecast } from "@/services/openmeteo";
  * @param dateString - String de data no formato ISO ou similar
  * @returns Data formatada como DD/MM/AAAA
  */
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-};
-
-
 /**
  * Componente principal da página Home
  * 
