@@ -35,10 +35,6 @@ export async function getOpenweatherFridayForecast() {
     throw new Error("API key for OpenWeather is not set.");
   }
 
-  // Verifica qual tempo de cache usar baseado no dia da semana
-  const { cacheTime } = shouldMakeApiRequest();
-  console.log("Cache time for OpenWeather:", cacheTime);
-
   // Coordenadas fixas para CEE (Centro de Educação Física e Esporte da UFBA)
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;
@@ -59,7 +55,6 @@ export async function getOpenweatherFridayForecast() {
     throw new Error(`Erro ao buscar previsão: ${response.statusText}`);
   }
   const data = await response.json();
-  // console.log("Dados da API:", data);
 
   // Filtra para sexta-feira (0=domingo, 5=sexta)
   const fridayForecasts = data.list.filter((item: WeatherData) => {

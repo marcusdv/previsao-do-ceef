@@ -20,6 +20,8 @@ export async function getAccuweatherFridayForecast() {
   const apiKey = process.env.ACCUWEATHER_API_KEY;
   const url =
     `https://dataservice.accuweather.com/forecasts/v1/daily/5day/43080?apikey=${apiKey}&language=pt-br&metric=false&details=true`;
+  console.log('AccuWeather API Key exists:', !!apiKey);
+  console.log('First 10 chars:', apiKey?.substring(0, 10));
 
   const response = await fetch(url, {
     next: { revalidate: cacheTime }, // Cache dinâmico baseado no dia da semana
@@ -31,7 +33,6 @@ export async function getAccuweatherFridayForecast() {
 
   // 3. Converte a resposta JSON em um objeto JavaScript
   const data = await response.json();
-  console.log('data openWeather =>', data)
 
   const friday = data.DailyForecasts.find((d: { Date: string }) => {
     const date = new Date(d.Date);
