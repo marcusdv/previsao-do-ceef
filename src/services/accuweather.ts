@@ -1,4 +1,5 @@
 import { AccuWeatherDataType } from "@/types/accuweatherType";
+import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
 
 // Função para converter Fahrenheit para Celsius
 function fahrenheitToCelsius(fahrenheit: number): number {
@@ -8,27 +9,6 @@ function fahrenheitToCelsius(fahrenheit: number): number {
 // Função para converter mph para km/h
 function mphToKmh(mph: number): number {
   return Math.round(mph * 1.60934);
-}
-
-// Função para determinar o tempo de cache baseado no dia da semana
-function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
-
-  // ESTRATÉGIA INTELIGENTE DE CACHE:
-
-  // Segunda a sexta (1-5): Cache de 12h
-  // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
-  // - Cache mais curto para manter dados atualizados quando são úteis
-  if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
-  }
-
-  // Fim de semana (sábado e domingo): Cache de 24h  
-  // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
-  // - Cache mais longo para evitar requisições desnecessárias
-  // - Economiza chamadas da API que não trariam dados úteis
-  return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
 }
 
 export async function getAccuweatherFridayForecast() {

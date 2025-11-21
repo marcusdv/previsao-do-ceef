@@ -1,6 +1,7 @@
 import { OpenWeatherDataType } from "@/types/openWeatherType";
+import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
 
-const API_KEY = process.env.OPENWEATHER_API_KEY;
+
 
 interface WeatherData {
   dt: number;
@@ -13,28 +14,6 @@ interface WeatherData {
   }>;
   wind: { speed: number };
 }
-
-// Função para determinar o tempo de cache baseado no dia da semana
-function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
-  
-  // ESTRATÉGIA INTELIGENTE DE CACHE:
-  
-  // Segunda a sexta (1-5): Cache de 12h
-  // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
-  // - Cache mais curto para manter dados atualizados quando são úteis
-  if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
-  }
-  
-  // Fim de semana (sábado e domingo): Cache de 72h  
-  // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
-  // - Cache mais longo para evitar requisições desnecessárias
-  // - Economiza chamadas da API que não trariam dados úteis
-  return { shouldRequest: true, cacheTime: 259200 }; // 72 horas (3 dias)
-}
-
 
 /**
  * Busca a previsão do tempo para sexta-feira em uma localização específica (CEEF) utilizando a API do OpenWeather.
@@ -50,6 +29,8 @@ function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
  * @throws Lança um erro caso a requisição à API falhe.
  */
 export async function getOpenweatherFridayForecast() {
+  const API_KEY = process.env.OPENWEATHER_API_KEY;
+
   if (!API_KEY) {
     throw new Error("API key for OpenWeather is not set.");
   }
@@ -57,7 +38,7 @@ export async function getOpenweatherFridayForecast() {
   // Verifica qual tempo de cache usar baseado no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
   console.log("Cache time for OpenWeather:", cacheTime);
-  
+
   // Coordenadas fixas para CEE (Centro de Educação Física e Esporte da UFBA)
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;

@@ -3,6 +3,8 @@
  * Retorna horário, temperatura, descrição, chance de chuva, velocidade do vento e índice UV.
  */
 
+import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
+
 interface ForecastItem {
   datetime: Date;
   temperatura: number;
@@ -10,22 +12,6 @@ interface ForecastItem {
   weather_code: number;
   velocidadeVento: number;
   indiceUV: number;
-}
-
-// Função para determinar o tempo de cache baseado no dia da semana
-function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
-
-  // ESTRATÉGIA INTELIGENTE DE CACHE:
-
-  // Segunda a sexta (1-5): Cache de 12h
-  if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
-  }
-
-  // Fim de semana (sábado e domingo): Cache de 24h  
-  return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
 }
 
 export async function getOpenMeteoFridayForecast() {
