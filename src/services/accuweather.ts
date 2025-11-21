@@ -14,27 +14,27 @@ function mphToKmh(mph: number): number {
 function shouldMakeApiRequest(): { shouldRequest: boolean; cacheTime: number } {
   const now = new Date();
   const dayOfWeek = now.getDay(); // 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
-  
+
   // ESTRATÉGIA INTELIGENTE DE CACHE:
-  
+
   // Segunda a sexta (1-5): Cache de 12h
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache mais curto para manter dados atualizados quando são úteis
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
+    return { shouldRequest: true, cacheTime: 60 }; // 1 minuto para testar
   }
-  
+
   // Fim de semana (sábado e domingo): Cache de 24h  
   // - A API de 5 dias NÃO consegue alcançar a próxima sexta-feira
   // - Cache mais longo para evitar requisições desnecessárias
   // - Economiza chamadas da API que não trariam dados úteis
-  return { shouldRequest: true, cacheTime: 86400 }; // 24 horas (1 dia)
+  return { shouldRequest: true, cacheTime: 120 }; // 2 minutos
 }
 
 export async function getAccuweatherFridayForecast() {
   // Determina a estratégia de cache baseada no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
-  
+
   // 1. Busca a previsão do tempo para a cidade de Salvador(ID 43080)
   // 2. Monta a URL da API com os parâmetros necessários (incluindo unidade métrica e idioma português).
   const url =
@@ -59,7 +59,7 @@ export async function getAccuweatherFridayForecast() {
 
   // 4. Se não encontrar previsão para sexta-feira, retorna null
   if (!friday) {
-    return { accuweatherData: null }; 
+    return { accuweatherData: null };
   }
 
 
@@ -104,6 +104,6 @@ export async function getAccuweatherFridayForecast() {
       Age: friday.Moon.Age,
     },
   };
-  
+
   return { accuweatherData };
 }
