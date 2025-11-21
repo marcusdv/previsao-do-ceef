@@ -32,8 +32,8 @@ export default async function Home() {
 
   // Promise.allSettled garante que se uma API falhar, as outras continuam funcionando
   // Isso evita que o build quebre se uma API estiver instável
-  const [openweatherResult, accuweatherResult, openmeteoResult] = await Promise.allSettled([
-    getOpenweatherFridayForecast(),    // API OpenWeather (previsão 5 dias)
+  const [accuweatherResult, openmeteoResult] = await Promise.allSettled([
+    // getOpenweatherFridayForecast(),    // API OpenWeather (previsão 5 dias)
     getAccuweatherFridayForecast(),    // API AccuWeather (previsão 5 dias)
     getOpenMeteoFridayForecast()       // API OpenMeteo (previsão 7 dias)
   ]);
@@ -41,7 +41,7 @@ export default async function Home() {
   // Extrai dados das APIs que tiveram sucesso, define null para as que falharam
   // Isso permite renderização parcial mesmo se algumas APIs estiverem indisponíveis
   const data = {
-    openweatherData: openweatherResult.status === 'fulfilled' ? openweatherResult.value.openweatherData : null,
+    // openweatherData: openweatherResult.status === 'fulfilled' ? openweatherResult.value.openweatherData : null,
     accuweatherData: accuweatherResult.status === 'fulfilled' ? accuweatherResult.value.accuweatherData : null,
     openMeteoData: openmeteoResult.status === 'fulfilled' ? openmeteoResult.value.openMeteoData : null
   };
@@ -85,7 +85,7 @@ export default async function Home() {
 
           {/* Renderização condicional: só mostra card se tiver dados */}
           {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2 "} />}
-          {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />}
+          {/* {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />} */}
           {data.accuweatherData && <AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
           {/* Componente do mapa com importação dinâmica */}
           <div className="col-span-2">
