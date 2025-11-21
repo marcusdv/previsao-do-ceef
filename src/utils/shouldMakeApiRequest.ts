@@ -8,10 +8,10 @@ export default function shouldMakeApiRequest(): { shouldRequest: boolean; cacheT
   // - Nestes dias, a API de 5 dias consegue retornar dados da próxima sexta-feira
   // - Cache curto para manter dados sempre atualizados
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 10 }; // 30 minutos (30 * 60 = 1800 segundos)
+    return { shouldRequest: true, cacheTime: 1800 }; // 30 minutos (30 * 60 = 1800 segundos)
   }
 
   // Fim de semana (sábado e domingo): Cache de 30 minutos também
   // - Mantém consistência no tempo de cache
-  return { shouldRequest: true, cacheTime: 10 }; // 30 minutos
+  return { shouldRequest: true, cacheTime: 1800 }; // 30 minutos
 }
