@@ -5,7 +5,7 @@ export default function shouldMakeApiRequest(): { shouldRequest: boolean; cacheT
   // ESTRATÉGIA DE CACHE: 30 MINUTOS
 
   if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-    return { shouldRequest: true, cacheTime: 10 }; // 12 horas
+    return { shouldRequest: true, cacheTime: 43200 }; // 12 horas
   }
-  return { shouldRequest: true, cacheTime: 10 }; // 24 horas
+  return { shouldRequest: true, cacheTime: 86400 }; // 24 horas
 }
