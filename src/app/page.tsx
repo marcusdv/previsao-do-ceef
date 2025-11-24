@@ -6,7 +6,6 @@ import MapaWrapper from "@/components/MapaWrapper";
 import Image from "next/image";
 
 // Serviços para buscar dados das APIs meteorológicas
-import { getOpenweatherFridayForecast } from "@/services/openweather"
 import { getAccuweatherFridayForecast } from "@/services/accuweather";
 import { getOpenMeteoFridayForecast } from "@/services/openmeteo";
 
