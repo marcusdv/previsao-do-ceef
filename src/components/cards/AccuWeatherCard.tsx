@@ -11,11 +11,27 @@ export default function AccuWeatherCard({ data, className }: Props) {
     const [isExpanded, setIsExpanded] = useState(false);
 
 
+    const handleAccordeonClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        // Lógica para expandir ou recolher o acordeão
+        const accordeonElement = event.currentTarget;
+        setIsExpanded((prev) => {
+            const next = !prev;
+            accordeonElement.style.gridTemplateRows = next ? '1fr' : '0fr';
+            return next;
+        });
+    }
+
     if (!data) {
         return (
-            <div className={`bg-white rounded-lg shadow-lg p-6 border border-gray-200 ${className}`}>
-                <h3 className="text-xl font-bold text-gray-800">AccuWeather</h3>
-                <p>Dados não disponíveis</p>
+            <div className={`bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 ${className}`}>
+
+                {/* Header do Card */}
+                <div className="flex cursor-pointer select-none items-center justify-between ">
+                    <h3 className="text-xl font-bold text-gray-800">AccuWeather</h3>
+                </div>
+                <div className="w-fit my-2">
+                    <p className="w-fit text-gray-500">Dados não encontrados :(</p>
+                </div>
             </div>
         );
     }
@@ -72,15 +88,7 @@ export default function AccuWeatherCard({ data, className }: Props) {
     }
 
 
-    const handleAccordeonClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        // Lógica para expandir ou recolher o acordeão
-        const accordeonElement = event.currentTarget;
-        setIsExpanded((prev) => {
-            const next = !prev;
-            accordeonElement.style.gridTemplateRows = next ? '1fr' : '0fr';
-            return next;
-        });
-    }
+
 
 
     return (

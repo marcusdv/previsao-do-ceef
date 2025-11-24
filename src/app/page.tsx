@@ -44,7 +44,6 @@ export default async function Home() {
     openMeteoData: openmeteoResult.status === 'fulfilled' ? openmeteoResult.value.openMeteoData : null
   };
 
-  console.log("Dados obtidos:", data.openMeteoData)
 
   return (
     // Container principal com altura mínima da tela
@@ -84,7 +83,7 @@ export default async function Home() {
           {/* Renderização condicional: só mostra card se tiver dados */}
           {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2 "} />}
           {/* {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />} */}
-          {data.accuweatherData && <AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
+          {<AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
           {/* Componente do mapa com importação dinâmica */}
           <div className="col-span-2">
             <MapaWrapper />
