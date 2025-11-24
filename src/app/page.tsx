@@ -1,5 +1,4 @@
 // Importação dos componentes de cards que exibem dados meteorológicos
-import OpenWeatherCard from "../components/cards/OpenWeatherCard";
 import AccuWeatherCard from "../components/cards/AccuWeatherCard";
 import OpenMeteoCard from "../components/cards/OpenMeteoCard";
 import MapaWrapper from "@/components/MapaWrapper";
