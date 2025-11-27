@@ -1,3 +1,6 @@
+/**
+ * Dados de previsão para um período (dia ou noite)
+ */
 interface DayPeriodType {
   hasPrecipitation: boolean;
   longPhrase: string;

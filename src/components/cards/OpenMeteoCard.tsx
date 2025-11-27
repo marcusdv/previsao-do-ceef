@@ -177,7 +177,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
   const headerContent = (isExpanded: boolean) => (
     <div className={`flex justify-between rounded-xl pb-6 ${className}`}>
-      <h3 className="text-xl font-bold text-gray-800">OppenMeteo</h3>
+      <h3 className="text-xl font-bold text-gray-800">OpenMeteo</h3>
       <span
         className={`cursor-pointer text-2xl select-none text-yellow-600 transition-transform duration-300 ${isExpanded ? "rotate-180" : "rotate-0"
           }`}
@@ -208,7 +208,7 @@ export default function OpenMeteoCard({ data, className }: Props) {
 
           {/* Máx. Chuva */}
           <div className="text-center p-3 bg-yellow-50 rounded-lg">
-            <h4 className="text-xs md:text-smfont-medium text-gray-500 mb-1">Máx. Chuva</h4>
+            <h4 className="text-xs md:text-sm font-medium text-gray-500 mb-1">Máx. Chuva</h4>
             <p className="text-lg md:text-2xl font-bold text-yellow-500">{maxRain}%</p>
           </div>
 

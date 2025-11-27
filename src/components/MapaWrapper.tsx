@@ -6,7 +6,7 @@ import AccordeonWrapper from './AccordeonWrapper';
 const MapaPrevisao = dynamic(
     () => import('@/components/MapaPrevisao'),
     {
-        loading: () => <div className="h-[300px] w-full bg-g</div>ray-100 rounded-xl flex items-center justify-center">
+        loading: () => <div className="h-[300px] w-full bg-gray-100 rounded-xl flex items-center justify-center">
             <p className="text-gray-600">Carregando mapa...</p>
         </div>,
         ssr: false

@@ -34,7 +34,12 @@ export async function GET(request: Request) {
       next: { revalidate: cacheTime },
     });
 
-    addLog('info', '[AccuWeather] Response status', { status: response.status, day });
+    addLog('info', '[AccuWeather] Requisição feita', { 
+      status: response.status, 
+      day,
+      cacheTime,
+      message: 'Array com 5 dias será cacheado e reutilizado'
+    });
 
     if (response.status === 401) {
       addLog('error', '[AccuWeather] API Key inválida');

@@ -5,7 +5,7 @@ import HamburguerMenu from "@/components/HamburguerMenu";
 
 export const metadata: Metadata = {
   title: "CEEFguru",
-  description: "Previsão do tempo para o treino de vôlei farmárcia",
+  description: "Previsão do tempo para o treino de vôlei de farmácia no CEEF/UFBA",
 };
 
 export default function RootLayout({
