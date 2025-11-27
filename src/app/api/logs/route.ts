@@ -3,8 +3,19 @@
 
 import { NextResponse } from 'next/server';
 
+// Tipo para os detalhes do log (pode ser qualquer objeto JSON-serializável)
+type LogDetails = Record<string, unknown> | string | number | boolean | null;
+
+// Tipo para uma entrada de log
+interface LogEntry {
+  timestamp: string;
+  level: 'info' | 'error' | 'success' | 'warning';
+  message: string;
+  details?: LogDetails;
+}
+
 // Array para armazenar logs em memória
-let logs: Array<{ timestamp: string; level: string; message: string; details?: any }> = [];
+let logs: LogEntry[] = [];
 
 // Limite de logs armazenados (para não usar muita memória)
 const MAX_LOGS = 100;
@@ -12,8 +23,12 @@ const MAX_LOGS = 100;
 /**
  * Adiciona um log ao array
  */
-export function addLog(level: 'info' | 'error' | 'success' | 'warning', message: string, details?: any) {
-  const log = {
+export function addLog(
+  level: 'info' | 'error' | 'success' | 'warning', 
+  message: string, 
+  details?: LogDetails
+) {
+  const log: LogEntry = {
     timestamp: new Date().toISOString(),
     level,
     message,
