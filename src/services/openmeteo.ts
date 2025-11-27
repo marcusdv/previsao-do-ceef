@@ -22,7 +22,7 @@ export async function getOpenMeteoFridayForecast() {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m,uv_index&timezone=America/Bahia&forecast_days=7`;
 
   const response = await fetch(url, {
-    next: { revalidate: cacheTime }, // Cache de 12h
+    next: { revalidate: cacheTime }, 
   });
 
   if (!response.ok) {
@@ -55,7 +55,6 @@ export async function getOpenMeteoFridayForecast() {
     99: "Tempestade com granizo forte",
   };
 
-  // Filtra para sexta-feira e horários entre 12h e 19h
   const fridayForecasts = data.hourly.time
     .map((time: string, index: number): ForecastItem => {
       const date = new Date(time);
@@ -80,48 +79,6 @@ export async function getOpenMeteoFridayForecast() {
       return hour >= 12 && hour <= 19;
     });
 
-  // Filtra para sábado e horários entre 9h e 16h
-  const saturdayForecasts = data.hourly.time
-    .map((time: string, index: number): ForecastItem => {
-      const date = new Date(time);
-      return {
-        datetime: date,
-        temperatura: data.hourly.temperature_2m[index],
-        probabilidadeChuva: data.hourly.precipitation_probability[index],
-        weather_code: data.hourly.weather_code[index],
-        velocidadeVento: data.hourly.wind_speed_10m[index],
-        indiceUV: data.hourly.uv_index[index],
-      };
-    })
-    .filter((item: ForecastItem) => item.datetime.getDay() === 6)
-    .filter((item: ForecastItem) => {
-      // Converte para string e extrai a hora diretamente
-      const timeString = item.datetime.toLocaleString("pt-BR", {
-        timeZone: "America/Bahia",
-        hour: "2-digit",
-        hour12: false,
-      });
-      const hour = parseInt(timeString);
-      return hour >= 9 && hour <= 16;
-    });
-
-
-  // ! tentativa para sábado
-  const openMeteoDataSaturday = saturdayForecasts.map((item: ForecastItem) => ({
-    fonte: "Open-Meteo",
-    dataHora: item.datetime.toLocaleString("pt-BR", {
-      timeZone: "America/Bahia",
-    }),
-    temperatura: item.temperatura ? item.temperatura.toFixed(0) : null,
-    descricao:
-      weatherCodeDescriptions[item.weather_code] || "Condição desconhecida",
-    probabilidadeChuva: item.probabilidadeChuva || 0,
-    velocidadeVento: item.velocidadeVento
-      ? item.velocidadeVento.toFixed(0)
-      : null,
-    indiceUV: item.indiceUV !== undefined ? item.indiceUV : null,
-  }));
-
 
   const openMeteoData = fridayForecasts.map((item: ForecastItem) => ({
     fonte: "Open-Meteo",
@@ -138,8 +95,9 @@ export async function getOpenMeteoFridayForecast() {
     indiceUV: item.indiceUV !== undefined ? item.indiceUV : null,
   }));
 
-  return { openMeteoData, openMeteoDataSaturday};
+  return { openMeteoData};
 }
+
 export type OpenMeteoDataType = {
   fonte: "Open-Meteo";
   dataHora: string; // Formato "DD/MM/YYYY, HH:MM:SS"

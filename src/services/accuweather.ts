@@ -1,28 +1,13 @@
 import { AccuWeatherDataType } from "@/types/accuweatherType";
 import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
+import { fahrenheitToCelsius } from "@/utils/fahrenheitToCelsius";
+import { mphToKmh } from "@/utils/mphToKmh";
 
-// Função para converter Fahrenheit para Celsius
-function fahrenheitToCelsius(fahrenheit: number): number {
-  return Math.round((fahrenheit - 32) * 5 / 9);
-}
-
-// Função para converter mph para km/h
-function mphToKmh(mph: number): number {
-  return Math.round(mph * 1.60934);
-}
 
 export async function getAccuweatherFridayForecast() {
-  console.log('🔍 [AccuWeather] Iniciando função...');
-  
-  // Determina a estratégia de cache baseada no dia da semana
   const { cacheTime } = shouldMakeApiRequest();
-  console.log('📊 [AccuWeather] Cache time:', cacheTime);
 
-  // 1. Busca a previsão do tempo para a cidade de Salvador(ID 43080)
-  // 2. Monta a URL da API com os parâmetros necessários (incluindo unidade métrica e idioma português).
   const apiKey = process.env.ACCUWEATHER_API_KEY;
-  console.log('🔑 [AccuWeather] API Key exists:', !!apiKey);
-  console.log('🔑 [AccuWeather] First 10 chars:', apiKey?.substring(0, 10));
   
   if (!apiKey) {
     console.error('❌ [AccuWeather] API Key não encontrada no process.env');
@@ -30,10 +15,8 @@ export async function getAccuweatherFridayForecast() {
   }
 
   const url = `https://dataservice.accuweather.com/forecasts/v1/daily/5day/43080?apikey=${apiKey}&language=pt-br&metric=false&details=true`;
-  console.log('🌐 [AccuWeather] URL:', url);
 
   try {
-    console.log('📡 [AccuWeather] Fazendo requisição...');
     const response = await fetch(url, {
       next: { revalidate: cacheTime }, // Cache dinâmico baseado no dia da semana
     });

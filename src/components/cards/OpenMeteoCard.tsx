@@ -1,5 +1,6 @@
 'use client';
 import { OpenMeteoDataType } from "@/services/openmeteo";
+import AccordeonWrapper from "../AccordeonWrapper";
 
 interface Props {
   data: OpenMeteoDataType[] | null; // Permite que os dados sejam nulos
@@ -173,134 +174,148 @@ export default function OpenMeteoCard({ data, className }: Props) {
   const uvInfo = getUVInfo(avgUV);
   const windInfo = getWindInfo(avgWind);
 
+
+  const headerContent = (isExpanded: boolean) => (
+    <div className={`flex justify-between rounded-xl pb-6 ${className}`}>
+      <h3 className="text-xl font-bold text-gray-800">OppenMeteo</h3>
+      <span
+        className={`cursor-pointer text-2xl select-none text-yellow-600 transition-transform duration-300 ${isExpanded ? "rotate-180" : "rotate-0"
+          }`}
+      >
+        ▲
+      </span>
+    </div>
+  );
+
   return (
     // acordeon
-    <div className={`bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 border border-amber-200/50 rounded-xl shadow-lg p-6 ${className}`}>
-      {/* Header do Card */}
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-gray-800">OpenMeteo</h3>
-        <div className="bg-amber-100/80 backdrop-blur-sm text-amber-800 px-2 py-1 rounded text-sm font-medium shadow-sm">
-          API Gratuita
-        </div>
-      </div>
+    <AccordeonWrapper
+      header={headerContent}
+      initialExpanded={true}
+      className={className}
+      contentClassName="bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 border border-amber-200/50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300"
+    >
+      <div className={`bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 border border-amber-200/50 rounded-xl shadow-lg p-6 ${className}`}>
+       
 
-      {/* Resumo Geral */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        {/* Temperatura Média */}
-        <div className="text-center p-3 bg-amber-50 rounded-lg">
-          <h4 className="text-xs md:text-sm font-medium text-gray-500 mb-1">Temp. Média</h4>
-          <p className="text-lg md:text-2xl font-bold text-amber-500">{avgTemp}°C</p>
+        {/* Resumo Geral */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          {/* Temperatura Média */}
+          <div className="text-center p-3 bg-amber-50 rounded-lg">
+            <h4 className="text-xs md:text-sm font-medium text-gray-500 mb-1">Temp. Média</h4>
+            <p className="text-lg md:text-2xl font-bold text-amber-500">{avgTemp}°C</p>
+          </div>
+
+          {/* Máx. Chuva */}
+          <div className="text-center p-3 bg-yellow-50 rounded-lg">
+            <h4 className="text-xs md:text-smfont-medium text-gray-500 mb-1">Máx. Chuva</h4>
+            <p className="text-lg md:text-2xl font-bold text-yellow-500">{maxRain}%</p>
+          </div>
+
+          {/* Vento Médio */}
+          <div className="text-center p-3 bg-yellow-50 rounded-lg">
+            <h4 className="text-xs md:text-sm font-medium text-gray-500 mb-1">Vento Médio</h4>
+            <p className="text-md md:text-2xl font-bold text-orange-500">{avgWind} km/h</p>
+          </div>
+
+          {/* UV Médio */}
+          <div className="text-center p-3 bg-emerald-100 rounded-lg">
+            <h4 className="text-xs md:text-sm font-medium text-emerald-500 mb-1">UV médio</h4>
+            <p className="text-lg md:text-2xl font-bold text-emerald-500">{avgUV.toFixed(1)}</p>
+          </div>
         </div>
 
-        {/* Máx. Chuva */}
-        <div className="text-center p-3 bg-yellow-50 rounded-lg">
-          <h4 className="text-xs md:text-smfont-medium text-gray-500 mb-1">Máx. Chuva</h4>
-          <p className="text-lg md:text-2xl font-bold text-yellow-500">{maxRain}%</p>
-        </div>
-
-        {/* Vento Médio */}
-        <div className="text-center p-3 bg-yellow-50 rounded-lg">
-          <h4 className="text-xs md:text-sm font-medium text-gray-500 mb-1">Vento Médio</h4>
-          <p className="text-md md:text-2xl font-bold text-orange-500">{avgWind} km/h</p>
-        </div>
-
-        {/* UV Médio */}
-        <div className="text-center p-3 bg-emerald-100 rounded-lg">
-          <h4 className="text-xs md:text-sm font-medium text-emerald-500 mb-1">UV médio</h4>
-          <p className="text-lg md:text-2xl font-bold text-emerald-500">{avgUV.toFixed(1)}</p>
-        </div>
-      </div>
-
-      {/* Previsão por Horário */}
-      <div className="mb-6">
-        <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
-          <i className="wi wi-time-3 text-amber-500 text-3xl mr-2"></i> Previsão Horária (12h às 19h)
-        </h5>
-        <div className="grid grid-cols-2 md:grid-cols-4 xxl:grid-cols-8 gap-2">
-          {data.map((item, index) => (
-            // Renderiza cada item da previsão horária
-            <div key={index} className="bg-amber-50 flex flex-col justify-center gap-0.5 p-3 rounded-lg text-center hover:bg-amber-100 transition-colors">
+        {/* Previsão por Horário */}
+        <div className="mb-6">
+          <h5 className="font-semibold text-gray-800 mb-3 flex items-center">
+            <i className="wi wi-time-3 text-amber-500 text-3xl mr-2"></i> Previsão Horária (12h às 19h)
+          </h5>
+          <div className="grid grid-cols-2 md:grid-cols-4 xxl:grid-cols-8 gap-2">
+            {data.map((item, index) => (
+              // Renderiza cada item da previsão horária
+              <div key={index} className="bg-amber-50 flex flex-col justify-center gap-0.5 p-3 rounded-lg text-center hover:bg-amber-100 transition-colors">
                 {/* 🕒 Horário */}
                 <div className="text-xs font-medium text-gray-500 mb-1">
-                {formatTime(item.dataHora)}
+                  {formatTime(item.dataHora)}
                 </div>
                 {/* 🌤️ Ícone do tempo */}
                 <div className="text-xl mb-1">
-                {getWeatherIcon(item.descricao, item.probabilidadeChuva || 0)}
+                  {getWeatherIcon(item.descricao, item.probabilidadeChuva || 0)}
                 </div>
                 {/* 🌡️ Temperatura */}
                 <div className="text-sm font-bold text-gray-800">
-                <i className="wi wi-thermometer text-gray-500 mr-1"></i>{item.temperatura}°C
+                  <i className="wi wi-thermometer text-gray-500 mr-1"></i>{item.temperatura}°C
                 </div>
                 {/* 🌧️ Probabilidade de chuva */}
                 <div className="text-xs text-indigo-500">
-                <i className="wi wi-rain text-indigo-500"></i> {item.probabilidadeChuva}%
+                  <i className="wi wi-rain text-indigo-500"></i> {item.probabilidadeChuva}%
                 </div>
                 {/* 💨 Velocidade do vento */}
                 <div className="text-xs text-slate-500">
-                <i className="wi wi-strong-wind text-slate-500"></i> {item.velocidadeVento} km/h
+                  <i className="wi wi-strong-wind text-slate-500"></i> {item.velocidadeVento} km/h
                 </div>
                 {/* 🔆 Índice UV */}
                 <div className="text-xs text-emerald-500">
-                <i className="wi wi-hot text-emerald-500"></i> {item.indiceUV !== null ? item.indiceUV.toFixed(1) : "N/A"}
+                  <i className="wi wi-hot text-emerald-500"></i> {item.indiceUV !== null ? item.indiceUV.toFixed(1) : "N/A"}
                 </div>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Condições Gerais */}
+        <div className="bg-gradient-to-r from-orange-100/70 via-amber-100/70 to-yellow-100/70 backdrop-blur-sm border border-orange-200/50 p-4 rounded-lg mb-4 shadow-sm">
+          <div className="flex items-center justify-between mb-2">
+
+
+            <h5 className="font-semibold text-gray-800 flex items-center">
+              <i className="wi wi-day-cloudy text-orange-500 mr-2"></i> Condições do Dia
+            </h5>
+          </div>
+          <p className="text-sm text-gray-700 mb-3 capitalize">
+            {data[0]?.descricao}
+          </p>
+
+          {/* Informações de UV */}
+          <div className="flex items-center mb-2">
+            <h6 className="font-semibold text-gray-800 mr-2 flex items-center">
+              <i className="wi wi-hot text-emerald-500 mr-1"></i> Índice UV:
+            </h6>
+            <span className={`font-bold ${uvInfo.cor}`}>
+              {avgUV.toFixed(1)} - {uvInfo.nivel}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mb-3">
+            {uvInfo.recomendacao}
+          </p>
+
+          {/* Informações do vento */}
+          <div className="flex items-center mb-2">
+            <h6 className="font-semibold text-gray-800 mr-2 flex items-center">
+              <i className={`wi wi-strong-wind text-slate-500 mr-1`}></i> Vento:
+            </h6>
+            <span className={`font-bold ${windInfo.cor}`}>
+              {avgWind} km/h - {windInfo.nivel}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 break-words">
+            {windInfo.efeito}
+          </p>
+
+
+        </div>
+
+        {/* Footer */}
+        <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
+          <p className="hidden md:block text-sm text-gray-500">
+            Previsão com as coordenadas do CEEF
+          </p>
+          <p className="text-sm text-gray-500">
+            Fonte: Open-Meteo API
+          </p>
         </div>
       </div>
-
-      {/* Condições Gerais */}
-      <div className="bg-gradient-to-r from-orange-100/70 via-amber-100/70 to-yellow-100/70 backdrop-blur-sm border border-orange-200/50 p-4 rounded-lg mb-4 shadow-sm">
-        <div className="flex items-center justify-between mb-2">
-
-
-          <h5 className="font-semibold text-gray-800 flex items-center">
-            <i className="wi wi-day-cloudy text-orange-500 mr-2"></i> Condições do Dia
-          </h5>
-        </div>
-        <p className="text-sm text-gray-700 mb-3 capitalize">
-          {data[0]?.descricao}
-        </p>
-
-        {/* Informações de UV */}
-        <div className="flex items-center mb-2">
-          <h6 className="font-semibold text-gray-800 mr-2 flex items-center">
-            <i className="wi wi-hot text-emerald-500 mr-1"></i> Índice UV:
-          </h6>
-          <span className={`font-bold ${uvInfo.cor}`}>
-            {avgUV.toFixed(1)} - {uvInfo.nivel}
-          </span>
-        </div>
-        <p className="text-xs text-gray-500 mb-3">
-          {uvInfo.recomendacao}
-        </p>
-
-        {/* Informações do vento */}
-        <div className="flex items-center mb-2">
-          <h6 className="font-semibold text-gray-800 mr-2 flex items-center">
-            <i className={`wi wi-strong-wind text-slate-500 mr-1`}></i> Vento:
-          </h6>
-          <span className={`font-bold ${windInfo.cor}`}>
-            {avgWind} km/h - {windInfo.nivel}
-          </span>
-        </div>
-        <p className="text-xs text-gray-500 break-words">
-          {windInfo.efeito}
-        </p>
-
-
-      </div>
-
-      {/* Footer */}
-      <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between">
-        <p className="hidden md:block text-sm text-gray-500">
-          Previsão com as coordenadas do CEEF
-        </p>
-        <p className="text-sm text-gray-500">
-          Fonte: Open-Meteo API
-        </p>
-      </div>
-    </div>
+    </AccordeonWrapper>
 
   );
 }

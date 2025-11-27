@@ -1,6 +1,7 @@
 'use client'
 import { AccuWeatherDataType } from "@/types/accuweatherType";
 import { useState } from "react";
+import AccordeonWrapper from "../AccordeonWrapper";
 
 interface Props {
     data: AccuWeatherDataType | null; // Permite que os dados sejam nulos
@@ -8,18 +9,7 @@ interface Props {
 }
 
 export default function AccuWeatherCard({ data, className }: Props) {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-
-    const handleAccordeonClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        // Lógica para expandir ou recolher o acordeão
-        const accordeonElement = event.currentTarget;
-        setIsExpanded((prev) => {
-            const next = !prev;
-            accordeonElement.style.gridTemplateRows = next ? '1fr' : '0fr';
-            return next;
-        });
-    }
+    const [isExpanded, setIsExpanded] = useState(true);
 
     if (!data) {
         return (
@@ -87,24 +77,27 @@ export default function AccuWeatherCard({ data, className }: Props) {
         return directionOBJ[direction] || direction;
     }
 
-
-
+    const headerContent = (isExpanded: boolean) => (
+        <div className={`flex justify-between  pb-6 hover:shadow-xl transition-all duration-300 ${className}`}>
+            <h3 className="text-xl font-bold text-gray-800">AccuWeather</h3>
+            <span
+                className={`cursor-pointer text-2xl select-none text-green-800 transition-transform duration-300 ${isExpanded ? "rotate-180" : "rotate-0"
+                    }`}
+            >
+                ▲
+            </span>
+        </div>
+    );
 
 
     return (
-        <div className={`accordeon ${className ? className : ""}`} onClick={handleAccordeonClick} >
-
-            <div className={`bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 ${className}`}>
-
-                {/* Header do Card */}
-                <div className="flex cursor-pointer select-none items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-gray-800">AccuWeather</h3>
-                    <span
-                        className={`cursor-pointer text-2xl select-none text-green-800 transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
-                    >
-                        ▲
-                    </span>
-                </div>
+        <AccordeonWrapper
+            header={headerContent}
+            initialExpanded={true}
+            className={className}
+            contentClassName="bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300"
+        >
+            <div className={`bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300`}>
 
                 {/* Temperaturas */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -238,6 +231,6 @@ export default function AccuWeatherCard({ data, className }: Props) {
                     </p>
                 </div>
             </div>
-        </div>
+        </AccordeonWrapper>
     );
 }
