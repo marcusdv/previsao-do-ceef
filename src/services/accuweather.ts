@@ -1,32 +1,21 @@
-// Service que faz requisição para a API Route local do Next.js
-// Este arquivo roda no CLIENT-SIDE e chama a rota /api/weather/accuweather
-// A API Route (route.ts) é quem faz a requisição real para AccuWeather no servidor
-
-/**
- * Função que busca a previsão do tempo da AccuWeather para sexta-feira
- * Chama a API Route interna do Next.js ao invés de chamar diretamente a API externa
- * Isso resolve problemas de CORS e mantém a API key segura
- */
-export async function getAccuweatherFridayForecast() {
+export async function getAccuweatherFridayForecast(dayOfWeek: number = 5) {
   try {
-    // Faz requisição para a API Route local (roda no servidor Next.js)
-    const response = await fetch('/api/weather/accuweather', {
-      cache: 'no-store' // Não cacheia no cliente, sempre busca dados frescos
+    // Aqui você ENVIA o parâmetro via query string na URL
+    const response = await fetch(`/api/weather/accuweather?day=${dayOfWeek}`, {
+      //                                                    ↑
+      //                             Parâmetro vira ?day=5 ou ?day=6
+      cache: 'no-store'
     });
 
-    // Verifica se a requisição foi bem-sucedida
     if (!response.ok) {
-      console.error('❌ [AccuWeather] Erro:', response.status);
-      return { accuweatherData: null }; // Retorna null em caso de erro
+      return { accuweatherData: null };
     }
 
-    // Parseia a resposta JSON
     const data = await response.json();
-    return data; // Retorna os dados { accuweatherData: AccuWeatherDataType | null }
+    return data;
 
   } catch (error) {
-    // Captura erros de rede ou parsing
     console.error('❌ [AccuWeather] Failed to fetch:', error);
-    return { accuweatherData: null }; // Retorna null em caso de erro
+    return { accuweatherData: null };
   }
 }

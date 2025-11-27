@@ -6,8 +6,19 @@ import { AccuWeatherDataType } from '@/types/accuweatherType';
 import shouldMakeApiRequest from '@/utils/shouldMakeApiRequest';
 import { addLog } from '@/utils/logger';
 
-export async function GET() {
+export async function GET(request: Request) {
   const { cacheTime } = shouldMakeApiRequest();
+  
+  // Extrai o parâmetro 'day' da URL (query parameter)
+  const { searchParams } = new URL(request.url);
+  const dayParam = searchParams.get('day');
+  const day = dayParam ? parseInt(dayParam) : 5; // Default é 5 (sexta-feira)
+  
+  // Valida se o dia é 5 ou 6
+  if (day !== 5 && day !== 6) {
+    addLog('error', '[AccuWeather] Dia inválido', { day });
+    return NextResponse.json({ error: 'Dia deve ser 5 (sexta) ou 6 (sábado)' }, { status: 400 });
+  }
   
   const apiKey = process.env.ACCUWEATHER_API_KEY;
 
@@ -23,7 +34,7 @@ export async function GET() {
       next: { revalidate: cacheTime },
     });
 
-    addLog('info', '[AccuWeather] Response status', { status: response.status });
+    addLog('info', '[AccuWeather] Response status', { status: response.status, day });
 
     if (response.status === 401) {
       addLog('error', '[AccuWeather] API Key inválida');
@@ -43,58 +54,64 @@ export async function GET() {
 
     const data = await response.json();
 
-    const friday = data.DailyForecasts.find((d: { Date: string }) => {
+    // Usa o parâmetro 'day' ao invés de hardcoded 5
+    const targetDay = data.DailyForecasts.find((d: { Date: string }) => {
       const date = new Date(d.Date);
-      return date.getDay() === 5;
+      return date.getDay() === day; // Agora usa a variável 'day' (5 ou 6)
     });
 
-    if (!friday) {
+    if (!targetDay) {
+      addLog('warning', '[AccuWeather] Dia não encontrado nas previsões', { day });
       return NextResponse.json({ accuweatherData: null });
     }
 
     const accuweatherData: AccuWeatherDataType = {
-      date: friday.Date,
+      date: targetDay.Date,
       temperature: {
-        max: friday.Temperature.Maximum.Value,
-        min: friday.Temperature.Minimum.Value,
+        max: targetDay.Temperature.Maximum.Value,
+        min: targetDay.Temperature.Minimum.Value,
       },
       realFeelTemperature: {
-        max: friday.RealFeelTemperature.Maximum.Value,
-        min: friday.RealFeelTemperature.Minimum.Value,
+        max: targetDay.RealFeelTemperature.Maximum.Value,
+        min: targetDay.RealFeelTemperature.Minimum.Value,
       },
       day: {
-        hasPrecipitation: friday.Day.HasPrecipitation,
-        longPhrase: friday.Day.LongPhrase,
-        precipitationProbability: friday.Day.PrecipitationProbability,
-        thunderstormProbability: friday.Day.ThunderstormProbability,
+        hasPrecipitation: targetDay.Day.HasPrecipitation,
+        longPhrase: targetDay.Day.LongPhrase,
+        precipitationProbability: targetDay.Day.PrecipitationProbability,
+        thunderstormProbability: targetDay.Day.ThunderstormProbability,
         wind: {
-          speed: friday.Day.Wind.Speed.Value,
-          direction: friday.Day.Wind.Direction.English,
+          speed: targetDay.Day.Wind.Speed.Value,
+          direction: targetDay.Day.Wind.Direction.English,
         },
       },
       night: {
-        hasPrecipitation: friday.Night.HasPrecipitation,
-        longPhrase: friday.Night.LongPhrase,
-        precipitationProbability: friday.Night.PrecipitationProbability,
-        thunderstormProbability: friday.Night.ThunderstormProbability,
+        hasPrecipitation: targetDay.Night.HasPrecipitation,
+        longPhrase: targetDay.Night.LongPhrase,
+        precipitationProbability: targetDay.Night.PrecipitationProbability,
+        thunderstormProbability: targetDay.Night.ThunderstormProbability,
         wind: {
-          speed: friday.Night.Wind.Speed.Value,
-          direction: friday.Night.Wind.Direction.English,
+          speed: targetDay.Night.Wind.Speed.Value,
+          direction: targetDay.Night.Wind.Direction.English,
         },
       },
       sun: {
-        Rise: friday.Sun.Rise,
-        Set: friday.Sun.Set,
+        Rise: targetDay.Sun.Rise,
+        Set: targetDay.Sun.Set,
       },
       moon: {
-        Rise: friday.Moon.Rise,
-        Set: friday.Moon.Set,
-        Phase: friday.Moon.Phase,
-        Age: friday.Moon.Age,
+        Rise: targetDay.Moon.Rise,
+        Set: targetDay.Moon.Set,
+        Phase: targetDay.Moon.Phase,
+        Age: targetDay.Moon.Age,
       },
     };
 
-    addLog('success', '[AccuWeather] Dados processados com sucesso', { date: accuweatherData.date });
+    addLog('success', '[AccuWeather] Dados processados com sucesso', { 
+      date: accuweatherData.date, 
+      day,
+      temperature: accuweatherData.temperature 
+    });
     
     return NextResponse.json({ accuweatherData });
 
