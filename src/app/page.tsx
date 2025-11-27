@@ -30,9 +30,10 @@ import { AccuWeatherDataType } from "@/types/accuweatherType";
  * - Server-side rendering com cache inteligente dos serviços
  */
 
+// como as apis classificam os dias da semana
+const DAYS: { [key: string]: number } = { 'sexta': 5, 'sábado': 6 };
+
 export default function Home() {
-  // como as apis classificam os dias da semana
-  const days: { [key: string]: number } = { 'sexta': 5, 'sábado': 6 };
 
   // dia padrão é sexta
   const [dayOfWeek, setDayOfWeek] = useState<string>('sexta');
@@ -55,7 +56,7 @@ export default function Home() {
 
       const [accuweatherResult, openmeteoResult] = await Promise.allSettled([
         getAccuweatherFridayForecast(),
-        getOpenMeteoFridayForecast(days[dayOfWeek])
+        getOpenMeteoFridayForecast(DAYS[dayOfWeek])
 
       ]);
 

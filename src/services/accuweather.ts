@@ -2,8 +2,6 @@
 // Este arquivo roda no CLIENT-SIDE e chama a rota /api/weather/accuweather
 // A API Route (route.ts) é quem faz a requisição real para AccuWeather no servidor
 
-import { AccuWeatherDataType } from "@/types/accuweatherType";
-
 /**
  * Função que busca a previsão do tempo da AccuWeather para sexta-feira
  * Chama a API Route interna do Next.js ao invés de chamar diretamente a API externa
