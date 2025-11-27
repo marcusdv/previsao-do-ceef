@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useState, useRef, useEffect } from 'react';
+import AccordeonWrapper from './AccordeonWrapper';
 
 // Importação dinâmica do mapa para evitar problemas de SSR
 const MapaPrevisao = dynamic(
@@ -13,55 +13,31 @@ const MapaPrevisao = dynamic(
     }
 );
 
-export default function MapaWrapper() {
+export default function MapaWrapper({className = ""}: {className: string}) {
 
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [linhas, setLinhas] = useState<'1fr' | '0fr'>('1fr');
-    const accordeonRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        if (accordeonRef.current) {
-            accordeonRef.current.style.gridTemplateRows = linhas;
-        }
-    }, [linhas]);
-
-    // Accordion para exibir os dados
-    const handleAccordeonClick = () => {
-        // Lógica para expandir ou recolher o acordeão
-        setIsExpanded((prev) => {
-            const next = !prev;
-            if (accordeonRef.current) {
-                setLinhas(next ? '0fr' : '1fr');
-                accordeonRef.current.style.gridTemplateRows = linhas;
-            }
-            return next;
-        });
-    }
-
-    return (
-        <div
-            className={`accordeon`}
-            ref={accordeonRef}
-        >
-            <div className={`bg-gradient-to-br  cursor-pointer from-gray-50 to-slate-100 rounded-xl shadow-lg p-6 border border-slate-200 lg:max-w-fit min-w-full`}
-
+    const headerContent = (isExpanded: boolean) => (
+        <div className={`flex justify-between rounded-xl pb-6`}>
+            <h3 className="text-xl font-bold text-gray-800">Local da previsão</h3>
+            <span
+                className={`cursor-pointer text-2xl select-none text-slate-800  transition-transform duration-300 ${isExpanded ? "rotate-180" : "rotate-0"
+                    }`}
             >
-                <div
-                    className="flex select-none items-center justify-between cursor-pointer mb-4"
-                    onClick={handleAccordeonClick}
-
-                >
-                    <h2 className="flex text-xl font-bold text-gray-800">Local da previsão</h2>
-                    <span
-                        className={`text-2xl select-none text-slate-800 transition-transform duration-300 ${isExpanded ? "-rotate-180" : "rotate-0"}`}
-                    >
-                        ▼
-                    </span>
-                </div>
-                <div className="overflow-hidden">
-                    <MapaPrevisao />
-                </div>
-            </div>
+                ▲
+            </span>
         </div>
     );
+
+    return (
+        <AccordeonWrapper
+            header={headerContent}
+            initialExpanded={true}
+            className={className}
+            contentClassName="bg-gradient-to-br  cursor-pointer from-gray-50 to-slate-100 rounded-xl shadow-lg p-6 border border-slate-200 lg:max-w-fit min-w-full"
+        >
+            <div className={`bg-gradient-to-br from-gray-50 via-slate-50 to-indigo-50-50 border border-slate-200/50 rounded-xl shadow-lg p-6`}>
+                <MapaPrevisao />
+            </div>
+        </AccordeonWrapper>
+    );
+    
 }

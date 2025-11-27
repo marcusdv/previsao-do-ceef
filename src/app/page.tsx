@@ -1,12 +1,15 @@
+'use client'
 // Importação dos componentes de cards que exibem dados meteorológicos
 import AccuWeatherCard from "../components/cards/AccuWeatherCard";
 import OpenMeteoCard from "../components/cards/OpenMeteoCard";
 import MapaWrapper from "@/components/MapaWrapper";
-import Image from "next/image";
 
 // Serviços para buscar dados das APIs meteorológicas
 import { getAccuweatherFridayForecast } from "@/services/accuweather";
-import { getOpenMeteoFridayForecast } from "@/services/openmeteo";
+import { getOpenMeteoFridayForecast, OpenMeteoDataType } from "@/services/openmeteo";
+import Header from "@/components/Header";
+import { useEffect, useState } from "react";
+import { AccuWeatherDataType } from "@/types/accuweatherType";
 
 /**
  * Função utilitária para formatar datas no padrão brasileiro
@@ -19,28 +22,53 @@ import { getOpenMeteoFridayForecast } from "@/services/openmeteo";
  * Responsabilidades:
  * - Buscar dados meteorológicos de 3 fontes diferentes (OpenWeather, AccuWeather, OpenMeteo)
  * - Renderizar cards com previsões para sexta-feira
- * - Tratar falhas de API de forma resiliente
+ * - Tratar falhas de API de forma resiliente 
  * 
  * Estratégia de resiliência:
  * - Usa Promise.allSettled para que falha em uma API não impeça as outras
  * - Renderização condicional: só mostra cards para APIs que retornaram dados
  * - Server-side rendering com cache inteligente dos serviços
  */
-export default async function Home() {
+
+export default function Home() {
+  // como as apis classificam os dias da semana
+  const days: { [key: string]: number } = { 'sexta': 5, 'sábado': 6 };
+
+  // dia padrão é sexta
+  const [dayOfWeek, setDayOfWeek] = useState<string>('sexta');
+  const [data, setData] = useState<{
+    accuweatherData: AccuWeatherDataType | null;
+    openMeteoData: OpenMeteoDataType[] | null;
+  }>({
+    accuweatherData: null, openMeteoData: null
+  })
 
   // Promise.allSettled garante que se uma API falhar, as outras continuam funcionando
   // Isso evita que o build quebre se uma API estiver instável
-  const [accuweatherResult, openmeteoResult] = await Promise.allSettled([
-    getAccuweatherFridayForecast(),    // API AccuWeather (previsão 5 dias)
-    getOpenMeteoFridayForecast()       // API OpenMeteo (previsão 7 dias)
-  ]);
+
 
   // Extrai dados das APIs que tiveram sucesso, define null para as que falharam
   // Isso permite renderização parcial mesmo se algumas APIs estiverem indisponíveis
-  const data = {
-    accuweatherData: accuweatherResult.status === 'fulfilled' ? accuweatherResult.value.accuweatherData : null,
-    openMeteoData: openmeteoResult.status === 'fulfilled' ? openmeteoResult.value.openMeteoData : null
-  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+      const [accuweatherResult, openmeteoResult] = await Promise.allSettled([
+        getAccuweatherFridayForecast(),
+        getOpenMeteoFridayForecast(days[dayOfWeek])
+
+      ]);
+
+      setData({
+        accuweatherData: accuweatherResult.status === 'fulfilled' ? accuweatherResult.value.accuweatherData : null,
+        openMeteoData: openmeteoResult.status === 'fulfilled' ? openmeteoResult.value.openMeteoData : null
+      })
+
+    }
+
+    fetchData();
+  }, [dayOfWeek]);
+
 
 
   return (
@@ -48,31 +76,7 @@ export default async function Home() {
     <div className="min-h-screen flex flex-col pb-10">
       <div className="flex-1 flex flex-col items-center justify-center">
 
-        {/* Header com favicon e título */}
-        <header className="flex flex-col items-center mb-2 mt-6 w-8/12 justify-center">
-          <div className="flex items-center mb-4">
-
-            <Image
-              src="/favicon.ico"
-              alt="CEEFguru Logo"
-              width={32}
-              height={32}
-              className="mr-3"
-            />
-            {/* Título principal da aplicação */}
-            <h1 className="text-4xl font-bold text-gray-800">CEEFGuru</h1>
-          </div>
-          <h2 className="text-xl text-gray-600 mb-8 text-center w-10/12 md:w-full">
-            Previsão do tempo exclusiva para o vôlei de farmácia no <span className="font-semibold">CEEF/UFBA</span> <br />
-            <span className="text-sm font-normal">(apenas para sextas-feiras) </span>
-            {data.openMeteoData && data.openMeteoData[0]?.dataHora && (
-              <>
-                {data.openMeteoData[0].dataHora.split(",")[0]}
-              </>
-            )}
-          </h2>
-        </header>
-
+        <Header dataOpenMeteo={data.openMeteoData && data.openMeteoData} dayOfWeek={dayOfWeek} setDayOfWeek={setDayOfWeek} />
 
 
         {/* col-span-2 em xxl para layout lado a lado em telas muito grandes */}
@@ -81,11 +85,9 @@ export default async function Home() {
           {/* Renderização condicional: só mostra card se tiver dados */}
           {data.openMeteoData && <OpenMeteoCard data={data.openMeteoData} className={"col-span-2 "} />}
           {/* {data.openweatherData && <OpenWeatherCard data={data.openweatherData} className={"col-span-2"} />} */}
-          {<AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
+          {data.accuweatherData && <AccuWeatherCard data={data.accuweatherData} className={"col-span-2"} />}
           {/* Componente do mapa com importação dinâmica */}
-          <div className="col-span-2">
-            <MapaWrapper />
-          </div>
+          <MapaWrapper className={"col-span-2"} />
         </div>
       </div>
     </div>

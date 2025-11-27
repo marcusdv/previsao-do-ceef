@@ -1,123 +1,34 @@
+// Service que faz requisição para a API Route local do Next.js
+// Este arquivo roda no CLIENT-SIDE e chama a rota /api/weather/accuweather
+// A API Route (route.ts) é quem faz a requisição real para AccuWeather no servidor
+
 import { AccuWeatherDataType } from "@/types/accuweatherType";
-import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
-import { fahrenheitToCelsius } from "@/utils/fahrenheitToCelsius";
-import { mphToKmh } from "@/utils/mphToKmh";
 
-
+/**
+ * Função que busca a previsão do tempo da AccuWeather para sexta-feira
+ * Chama a API Route interna do Next.js ao invés de chamar diretamente a API externa
+ * Isso resolve problemas de CORS e mantém a API key segura
+ */
 export async function getAccuweatherFridayForecast() {
-  const { cacheTime } = shouldMakeApiRequest();
-
-  const apiKey = process.env.ACCUWEATHER_API_KEY;
-  
-  if (!apiKey) {
-    console.error('❌ [AccuWeather] API Key não encontrada no process.env');
-    return { accuweatherData: null };
-  }
-
-  const url = `https://dataservice.accuweather.com/forecasts/v1/daily/5day/43080?apikey=${apiKey}&language=pt-br&metric=false&details=true`;
-
   try {
-    const response = await fetch(url, {
-      next: { revalidate: cacheTime }, // Cache dinâmico baseado no dia da semana
+    // Faz requisição para a API Route local (roda no servidor Next.js)
+    const response = await fetch('/api/weather/accuweather', {
+      cache: 'no-store' // Não cacheia no cliente, sempre busca dados frescos
     });
 
-    console.log('📡 [AccuWeather] Response status:', response.status);
-    console.log('📡 [AccuWeather] Response ok:', response.ok);
-    console.log('📡 [AccuWeather] Response statusText:', response.statusText);
-
-    if (response.status === 401) {
-      console.error('❌ [AccuWeather] Erro 401: API Key inválida ou expirada');
-      return { accuweatherData: null };
-    }
-
-    if (response.status === 429) {
-      console.error('❌ [AccuWeather] Erro 429: Limite da API excedido');
-      return { accuweatherData: null };
-    }
-
-    if (response.status === 403) {
-      console.error('❌ [AccuWeather] Erro 403: Acesso negado - verifique permissões da API key');
-      return { accuweatherData: null };
-    }
-
+    // Verifica se a requisição foi bem-sucedida
     if (!response.ok) {
-      console.error(`❌ [AccuWeather] Erro ${response.status}: ${response.statusText}`);
-      const errorText = await response.text();
-      console.error('❌ [AccuWeather] Error body:', errorText);
-      return { accuweatherData: null };
+      console.error('❌ [AccuWeather] Erro:', response.status);
+      return { accuweatherData: null }; // Retorna null em caso de erro
     }
 
-    // 3. Converte a resposta JSON em um objeto JavaScript
-    console.log('📋 [AccuWeather] Convertendo resposta para JSON...');
+    // Parseia a resposta JSON
     const data = await response.json();
-    console.log('📋 [AccuWeather] Dados recebidos:', !!data);
-    console.log('📋 [AccuWeather] DailyForecasts length:', data?.DailyForecasts?.length);
-    console.log('📋 [AccuWeather] Primeira data:', data?.DailyForecasts?.[0]?.Date);
-
-    const friday = data.DailyForecasts.find((d: { Date: string }) => {
-      const date = new Date(d.Date);
-      console.log('🗓️ [AccuWeather] Verificando data:', d.Date, 'Dia da semana:', date.getDay());
-      return date.getDay() === 5; // 5 = sexta-feira
-    });
-
-    console.log('📅 [AccuWeather] Sexta-feira encontrada:', !!friday);
-
-    // 4. Se não encontrar previsão para sexta-feira, retorna null
-    if (!friday) {
-      console.log('❌ [AccuWeather] Nenhuma sexta-feira encontrada no array de previsões');
-      return { accuweatherData: null };
-    }
-
-    console.log('✅ [AccuWeather] Processando dados da sexta-feira...');
-
-    const accuweatherData: AccuWeatherDataType = {
-      date: friday.Date,
-      temperature: {
-        max: fahrenheitToCelsius(friday.Temperature.Maximum.Value),
-        min: fahrenheitToCelsius(friday.Temperature.Minimum.Value),
-      },
-      realFeelTemperature: {
-        max: fahrenheitToCelsius(friday.RealFeelTemperature.Maximum.Value),
-        min: fahrenheitToCelsius(friday.RealFeelTemperature.Minimum.Value),
-      },
-      day: {
-        hasPrecipitation: friday.Day.HasPrecipitation,
-        longPhrase: friday.Day.LongPhrase,
-        precipitationProbability: friday.Day.PrecipitationProbability,
-        thunderstormProbability: friday.Day.ThunderstormProbability,
-        wind: {
-          speed: mphToKmh(friday.Day.Wind.Speed.Value),
-          direction: friday.Day.Wind.Direction.English,
-        },
-      },
-      night: {
-        hasPrecipitation: friday.Night.HasPrecipitation,
-        longPhrase: friday.Night.LongPhrase,
-        precipitationProbability: friday.Night.PrecipitationProbability,
-        thunderstormProbability: friday.Night.ThunderstormProbability,
-        wind: {
-          speed: mphToKmh(friday.Night.Wind.Speed.Value),
-          direction: friday.Night.Wind.Direction.English,
-        },
-      },
-      sun: {
-        Rise: friday.Sun.Rise,
-        Set: friday.Sun.Set,
-      },
-      moon: {
-        Rise: friday.Moon.Rise,
-        Set: friday.Moon.Set,
-        Phase: friday.Moon.Phase,
-        Age: friday.Moon.Age,
-      },
-    };
-
-    console.log('✅ [AccuWeather] Dados processados com sucesso!');
-    return { accuweatherData };
+    return data; // Retorna os dados { accuweatherData: AccuWeatherDataType | null }
 
   } catch (error) {
-    console.error('❌ [AccuWeather] Erro geral na função:', error);
-    console.error('❌ [AccuWeather] Stack trace:', (error as Error)?.stack);
-    return { accuweatherData: null };
+    // Captura erros de rede ou parsing
+    console.error('❌ [AccuWeather] Failed to fetch:', error);
+    return { accuweatherData: null }; // Retorna null em caso de erro
   }
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+
 export default function HamburguerMenu() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -58,7 +59,7 @@ export default function HamburguerMenu() {
                     <ul className="flex flex-col gap-2" onClick={() => setIsOpen(false)}>
                         <li>
                             <Link
-                                className="flex items-center justify-center gap-2 hover:underline hover:underline-offset-4"
+                                className="flex items-center justify-between gap-2 hover:underline hover:underline-offset-4"
                                 href="/"
 
                             >
@@ -74,7 +75,7 @@ export default function HamburguerMenu() {
                         </li>
                         <li>
                             <Link
-                                className="flex items-center justify-center gap-2 hover:underline hover:underline-offset-4"
+                                className="flex items-center justify-between gap-2 hover:underline hover:underline-offset-4"
                                 href="/sobre"
 
                             >
@@ -86,6 +87,22 @@ export default function HamburguerMenu() {
                                     height={16}
                                 />
                                 Sobre
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                className="flex items-center justify-around gap-2 hover:underline hover:underline-offset-4"
+                                href="/api/logs"
+
+                            >
+                                <Image
+                                    aria-hidden
+                                    src="/logs.svg"
+                                    alt="File icon"
+                                    width={16}
+                                    height={16}
+                                />
+                                Logs
                             </Link>
                         </li>
                     </ul>

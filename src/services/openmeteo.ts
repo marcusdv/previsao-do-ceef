@@ -4,6 +4,7 @@
  */
 
 import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
+import { addLog } from "@/app/api/logs/route";
 
 interface ForecastItem {
   datetime: Date;
@@ -14,24 +15,26 @@ interface ForecastItem {
   indiceUV: number;
 }
 
-export async function getOpenMeteoFridayForecast() {
+export async function getOpenMeteoFridayForecast(dayOfWeek: number) {
   const { cacheTime } = shouldMakeApiRequest();
 
   const lat = -13.008085569770852;
   const lon = -38.51330742515813;
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m,uv_index&timezone=America/Bahia&forecast_days=7`;
 
-  const response = await fetch(url, {
-    next: { revalidate: cacheTime }, 
-  });
+  try {
+    const response = await fetch(url, {
+      next: { revalidate: cacheTime }, 
+    });
 
-  if (!response.ok) {
-    throw new Error(
-      `Erro ao buscar previsão Open-Meteo: ${response.statusText}`
-    );
-  }
+    addLog('info', '[OpenMeteo] Response status', { status: response.status });
 
-  const data = await response.json();
+    if (!response.ok) {
+      addLog('error', '[OpenMeteo] Erro na API', { status: response.status, statusText: response.statusText });
+      throw new Error(`Erro ao buscar previsão Open-Meteo: ${response.statusText}`);
+    }
+
+    const data = await response.json();
 
   // Mapeia códigos meteorológicos para descrição
   const weatherCodeDescriptions: { [key: number]: string } = {
@@ -67,7 +70,7 @@ export async function getOpenMeteoFridayForecast() {
         indiceUV: data.hourly.uv_index[index],
       };
     })
-    .filter((item: ForecastItem) => item.datetime.getDay() === 5)
+    .filter((item: ForecastItem) => item.datetime.getDay() === dayOfWeek)
     .filter((item: ForecastItem) => {
       // Converte para string e extrai a hora diretamente
       const timeString = item.datetime.toLocaleString("pt-BR", {
@@ -95,7 +98,13 @@ export async function getOpenMeteoFridayForecast() {
     indiceUV: item.indiceUV !== undefined ? item.indiceUV : null,
   }));
 
+  addLog('success', '[OpenMeteo] Dados processados com sucesso', { totalForecasts: openMeteoData.length });
+
   return { openMeteoData};
+  } catch (error) {
+    addLog('error', '[OpenMeteo] Erro inesperado', { error: String(error) });
+    throw error;
+  }
 }
 
 export type OpenMeteoDataType = {

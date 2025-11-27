@@ -1,7 +1,9 @@
 'use client'
 import { AccuWeatherDataType } from "@/types/accuweatherType";
-import { useState } from "react";
 import AccordeonWrapper from "../AccordeonWrapper";
+import { mphToKmh } from '@/utils/mphToKmh';
+import { fahrenheitToCelsius } from '@/utils/fahrenheitToCelsius';
+
 
 interface Props {
     data: AccuWeatherDataType | null; // Permite que os dados sejam nulos
@@ -9,8 +11,6 @@ interface Props {
 }
 
 export default function AccuWeatherCard({ data, className }: Props) {
-    const [isExpanded, setIsExpanded] = useState(true);
-
     if (!data) {
         return (
             <div className={`bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 ${className}`}>
@@ -28,16 +28,6 @@ export default function AccuWeatherCard({ data, className }: Props) {
 
     const { temperature, realFeelTemperature, day, night, sun, moon } = data;
 
-
-    // Formatar a data
-    // const formatDate = (dateString: string) => {
-    //     return new Date(dateString).toLocaleDateString("pt-BR", {
-    //         weekday: "long",
-    //         day: "2-digit",
-    //         month: "2-digit",
-    //         year: "numeric",
-    //     });
-    // };
 
     // Formatar horários
     const formatTime = (timeString: string) => {
@@ -105,10 +95,10 @@ export default function AccuWeatherCard({ data, className }: Props) {
                     <div className="text-center p-3 bg-cyan-50 rounded-lg">
                         <h4 className="text-sm font-medium text-gray-600 mb-1">Temperatura</h4>
                         <p className="text-2xl font-bold text-cyan-600">
-                            {Math.round((temperature.max + temperature.min) / 2)}°C
+                            {Math.round((fahrenheitToCelsius(temperature.max) + fahrenheitToCelsius(temperature.min)) / 2)}°C
                         </p>
                         <p className="text-xs text-gray-500">
-                            {temperature.min}° - {temperature.max}°
+                            {fahrenheitToCelsius(temperature.min)}° - {fahrenheitToCelsius(temperature.max)}°
                         </p>
                     </div>
 
@@ -116,10 +106,10 @@ export default function AccuWeatherCard({ data, className }: Props) {
                     <div className="text-center p-3 bg-teal-50 rounded-lg">
                         <h4 className="text-sm font-medium text-gray-600 mb-1">Sensação</h4>
                         <p className="text-2xl font-bold text-teal-600">
-                            {Math.round((realFeelTemperature.max + realFeelTemperature.min) / 2)}°C
+                            {Math.round((fahrenheitToCelsius(realFeelTemperature.max) + fahrenheitToCelsius(realFeelTemperature.min)) / 2)}°C
                         </p>
                         <p className="text-xs text-gray-500">
-                            {realFeelTemperature.min}° - {realFeelTemperature.max}°
+                            {fahrenheitToCelsius(realFeelTemperature.min)}° - {fahrenheitToCelsius(realFeelTemperature.max)}°
                         </p>
                     </div>
                 </div>
@@ -141,7 +131,7 @@ export default function AccuWeatherCard({ data, className }: Props) {
                         <div className="flex justify-between text-xs text-gray-600">
                             <span>
                                 <i className="wi wi-strong-wind mr-1"></i>
-                                {day.wind.speed} Km/h {translateCardinalDirection(day.wind.direction)}
+                                {mphToKmh(day.wind.speed)} Km/h {translateCardinalDirection(day.wind.direction)}
                             </span>
                             <span>
                                 <i className="wi wi-thunderstorm mr-1"></i>
@@ -165,7 +155,7 @@ export default function AccuWeatherCard({ data, className }: Props) {
                         <div className="flex justify-between text-xs text-gray-600">
                             <span>
                                 <i className="wi wi-strong-wind mr-1"></i>
-                                {night.wind.speed} Km/h {translateCardinalDirection(night.wind.direction)}
+                                {mphToKmh(night.wind.speed)} Km/h {translateCardinalDirection(night.wind.direction)}
                             </span>
                             <span>
                                 <i className="wi wi-thunderstorm mr-1"></i>
