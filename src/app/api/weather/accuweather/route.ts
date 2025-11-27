@@ -4,7 +4,7 @@
 import { NextResponse } from 'next/server';
 import { AccuWeatherDataType } from '@/types/accuweatherType';
 import shouldMakeApiRequest from '@/utils/shouldMakeApiRequest';
-import { addLog } from '@/app/api/logs/route';
+import { addLog } from '@/utils/logger';
 
 export async function GET() {
   const { cacheTime } = shouldMakeApiRequest();

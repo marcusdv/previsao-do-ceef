@@ -4,7 +4,7 @@
  */
 
 import shouldMakeApiRequest from "@/utils/shouldMakeApiRequest";
-import { addLog } from "@/app/api/logs/route";
+import { addLog } from "@/utils/logger";
 
 interface ForecastItem {
   datetime: Date;
